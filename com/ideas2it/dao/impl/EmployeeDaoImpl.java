@@ -130,7 +130,9 @@ public class EmployeeDaoImpl {
             tx = session.beginTransaction();
             int id = Integer.valueOf(trainerId.substring(3));
             Trainer trainerDetails = (Trainer) session.get(Trainer.class, id);
+            Criteria cr = session.createCriteria(Trainer.class);
             cr.add(Restrictions.eq("isRemoved", false));
+           // trainer.setIsRemoved(true);
             trainer = trainerDetails;
             tx.commit();
         } catch(HibernateException e) {
@@ -151,7 +153,9 @@ public class EmployeeDaoImpl {
             tx = session.beginTransaction();
             int id = Integer.valueOf(traineeId.substring(3));
             Trainee traineeDetails = (Trainee) session.get(Trainee.class, id);
+            Criteria cr = session.createCriteria(Trainee.class);
             cr.add(Restrictions.eq("isRemoved", false));
+            //trainee.setIsRemoved(true);
             trainee = traineeDetails;
             tx.commit();
         } catch(HibernateException e) {
@@ -173,6 +177,8 @@ public class EmployeeDaoImpl {
             tx = session.beginTransaction();
             int id = Integer.valueOf(removeEmployeeId.substring(3));
             Trainer trainer = (Trainer) session.get(Trainer.class, id);
+            
+            Criteria cr = session.createCriteria(Trainer.class);
             cr.add(Restrictions.eq("isRemoved", false));
             trainer.setIsRemoved(true);
             session.update(trainer);
@@ -189,14 +195,18 @@ public class EmployeeDaoImpl {
     }
 
     public void deleteTraineeById(String removeEmployeeId) {
-         Transaction tx = null;
+       Transaction tx = null;
+        
         try (Session session = EmployeeFactory.getTrainerFactory().openSession();) {
 
             tx = session.beginTransaction();
-           
-            Trainee trainee = (Trainee) session.get(Trainee.class, removeEmployeeId);
+            int id = Integer.valueOf(removeEmployeeId.substring(3));
+            Trainee trainee = (Trainee) session.get(Trainee.class, id);
             
-            session.remove(trainee);
+            Criteria cr = session.createCriteria(Trainee.class);
+            cr.add(Restrictions.eq("isRemoved", false));
+            trainee.setIsRemoved(true);
+            session.update(trainee);
 
             tx.commit();
         } catch (HibernateException e) {
@@ -205,57 +215,67 @@ public class EmployeeDaoImpl {
                 tx.rollback();
             }
             e.printStackTrace();
-        }
+        } 
+  
+    
     }
 
    public void modifyTrainerDetailsById(String trainerId, Trainer trainer) {
+        Transaction tx = null;
+        String message = "Trainer details not updated successfully";
+        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        int id = Integer.valueOf(trainerId.substring(3));
 
-        String sql = "update trainer set firstname = (?), lastName = (?), mobilenumber = (?),  email = (?), aadharNumber = (?), panCard = (?), bloodgroup = (?) where trainerid = (?)";
-        try (Connection connection = ConnectionConfiq.getInstance();
-             PreparedStatement statement = connection.prepareStatement(sql);) {
-
+            Trainer trainers = (Trainer) session.get(Trainer.class, id);
+            tx = session.beginTransaction();
            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            statement.setString(8, trainerId);
-            statement.setString(1, trainer.getFirstName());
-            statement.setString(2, trainer.getLastName());
-            statement.setLong(3, trainer.getMobileNumber());
-            statement.setString(4, trainer.getEmail());
-            statement.setLong(5, trainer.getAadharNumber());
-            statement.setString(6, trainer.getPanCard());
-            statement.setString(7, trainer.getBloodGroup());
-            
-            statement.executeUpdate();
-    
-        } catch(SQLException | ClassNotFoundException e) { 
-            System.out.println(e);
-        }
-              
+            trainers.setFirstName(trainer.getFirstName());
+            trainers.setLastName(trainer.getLastName());
+            trainers.setEmail(trainer.getEmail());
+            trainers.setDateOfBirth(trainer.getDateOfBirth());
+            trainers.setMobileNumber(trainer.getMobileNumber());
+            trainers.setBloodGroup(trainer.getBloodGroup());
+            session.update(trainers);
+            message = "Trainer Details updated Successfully";
+            tx.commit();
+        } catch(HibernateException e) {
+
+            if(tx!=null) {
+
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }        
+                      
     }
     public void modifyTraineeDetailsById(String traineeId, Trainee trainee) {
 
-        String sql = "update trainee set firstname = (?), lastName = (?), mobilenumber = (?),  email = (?), aadharNumber = (?), panCard = (?), bloodgroup = (?) where traineeid = (?)";
-        try (Connection connection = ConnectionConfiq.getInstance();
-             PreparedStatement statement = connection.prepareStatement(sql);) {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        
-            statement.setString(8, traineeId);
-            statement.setString(1, trainee.getFirstName());
-            statement.setString(2, trainee.getLastName());
-            statement.setLong(3, trainee.getMobileNumber());          
-            statement.setString(4, trainee.getEmail());
-            statement.setLong(5, trainee.getAadharNumber());
-            statement.setString(6, trainee.getPanCard());
-            statement.setString(7, trainee.getBloodGroup());
-            
-            statement.executeUpdate();
-    
-        } catch(SQLException | ClassNotFoundException e) { 
+        Transaction tx = null;
+        String message = "Trainee details not updated successfully";
+        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        int id = Integer.valueOf(traineeId.substring(3));
 
-            System.out.println(e);
-        }
-              
+            Trainee trainees = (Trainee) session.get(Trainee.class, id);
+            tx = session.beginTransaction();
+           
+            trainees.setFirstName(trainee.getFirstName());
+            trainees.setLastName(trainee.getLastName());
+            trainees.setEmail(trainee.getEmail());
+            trainees.setDateOfBirth(trainee.getDateOfBirth());
+            trainees.setMobileNumber(trainee.getMobileNumber());
+            trainees.setBloodGroup(trainee.getBloodGroup());
+            session.update(trainees);
+            message = "Trainer Details updated Successfully";
+            tx.commit();
+        } catch(HibernateException e) {
+
+            if(tx!=null) {
+
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }        
+                      
     }
   
    public int getIdFromTable() {
