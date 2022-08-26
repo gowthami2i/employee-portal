@@ -1,6 +1,12 @@
 package com.ideas2it.model;
 
 import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.List;
+
 @Entity
 @Table(name ="trainee")
 public class Trainee extends Employee {

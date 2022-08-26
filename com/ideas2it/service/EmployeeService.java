@@ -45,27 +45,27 @@ public interface EmployeeService {
      * method is used to searchTrainerDetailsById
      * @return {@link Trainer>} currentTrainer object
      */
-    Trainer searchTrainerDetailsById(String EmployeeId);
+    Trainer searchTrainerDetailsById(int EmployeeId);
 
     /**
      * method is used to searchTraineeDetailsById
      * @return {@link Trainee>} currentTrainee object
      */
-    Trainee searchTraineeDetailsById(String EmployeeId);
+    Trainee searchTraineeDetailsById(int EmployeeId);
 
     /**
      * method is used to deleteTrainerDetails
      * @param {@link String} removeEmployeeId
      * @return {@link void} 
      */
-    void deleteTrainerDetails(String removeEmployeeId);
+    void deleteTrainerDetails(int removeEmployeeId);
     
     /**
      * method is used to deleteTraineeDetails
      * @param {@link String} removeEmployeeId
      * @return {@link void} 
      */
-    void deleteTraineeDetails(String removeEmployeeId);
+    void deleteTraineeDetails(int removeEmployeeId);
 
     
     /**
@@ -74,7 +74,7 @@ public interface EmployeeService {
      * @param {@link Trainer} searchedUpdateTrainer object
      * @return {@link void} 
      */
-    void updatedTrainerDetails(String employeeId, Trainer searchedUpdateTrainer);
+    void updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer);
 
     /**
      * method is used to updateTraineeDetails
@@ -82,7 +82,7 @@ public interface EmployeeService {
      *@param {@link Trainer} searchedUpdateTrainee object
      * @return {@link void} 
      */
-    void updatedTraineeDetails(String employeeId, Trainee searchedUpdateTrainee);
+    void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee);
 
     void associateEmployee(String trainerId, String traineeId, int userChoice);
     int getIdFromDao();

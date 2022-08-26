@@ -49,41 +49,41 @@ public interface EmployeeDao {
      * @param {@link String} employeeId
      * @return {@link Trainer} trainer Object
      */
-    Trainer retrieveTrainerbyId(String trainerId);
+    Trainer retrieveTrainerbyId(int trainerId);
     
     /**
      * method is used to retrieve the Trainee by EmployeeId in the map 
      * @param {@link String} employeeId
      * @return {@link Trainee} trainee Object
      */
-    Trainee retrieveTraineebyId(String traineeId);
+    Trainee retrieveTraineebyId(int traineeId);
 
     /**
      * method is used to Update the Trainer by  using EmployeeId and user update object in the  
      * @param {@link String} employeeId
      * @param {@link Trainer} searchedUpdateTrainer Object
      */    
-    void modifyTrainerDetailsById(String trainerId, Trainer trainer);
+    void modifyTrainerDetailsById(int trainerId, Trainer trainer);
 
     /**
      * method is used to Update the Trainee by  using EmployeeId and user updateobject  
      * @param {@link String} employeeId
      * @param {@link Trainee} searchedUpdateTrainee Object
      */
-    void modifyTraineeDetailsById(String traineeId, Trainee trainee);
+    void modifyTraineeDetailsById(int traineeId, Trainee trainee);
     
     /**
      * method is used to delete the Trainer by  using EmployeeId  
      * @param {@link String} employeeId
      */       
-    void deleteTrainerById(String removeEmployeeId) ;
+    void deleteTrainerById(int removeEmployeeId) ;
 
     /**
      * method is used to delete the Trainee by using EmployeeId  
      * @param {@link String} employeeId
      * @return{@void}
      */
-    void deleteTraineeById(String removeEmployeeId);
+    void deleteTraineeById(int removeEmployeeId);
     void employeeAssociation(String trainerID, String traineeID, int choice);
     int getIdFromTable();
 

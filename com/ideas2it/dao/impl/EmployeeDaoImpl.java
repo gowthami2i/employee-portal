@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import javax.persistence.*;
+import org.hibernate.*;
 
 
 
@@ -123,17 +125,18 @@ public class EmployeeDaoImpl {
         }
        return trainees;
     }           
-    public Trainer retrieveTrainerbyId(String trainerId) {
+    public Trainer retrieveTrainerbyId(int trainerId) {
+        System.out.println(trainerId + "dao");
         Transaction tx = null;
-        Trainer trainer = null;
+        Trainer trainerDetails = null;
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
             tx = session.beginTransaction();
-            int id = Integer.valueOf(trainerId.substring(3));
-            Trainer trainerDetails = (Trainer) session.get(Trainer.class, id);
-            Criteria cr = session.createCriteria(Trainer.class);
-            cr.add(Restrictions.eq("isRemoved", false));
-           // trainer.setIsRemoved(true);
-            trainer = trainerDetails;
+             trainerDetails = (Trainer) session.get(Trainer.class, trainerId);
+           // Criteria cr = session.createCriteria(Trainer.class);
+            //cr.add(Restrictions.eq("isRemoved", false));
+            //trainer = (Trainer)cr.list().get(0);
+            trainerDetails.getTraineeDetails().forEach(trainee->System.out.println(trainee.getFirstName()));
+            //trainer.setIsRemoved(true);
             tx.commit();
         } catch(HibernateException e) {
 
@@ -143,20 +146,24 @@ public class EmployeeDaoImpl {
             }
             e.printStackTrace();
         }
-        return trainer;
-
+        return trainerDetails;
     }
-    public Trainee retrieveTraineebyId(String traineeId) {
+    public Trainee retrieveTraineebyId(int traineeId) {
+         System.out.println( traineeId+ "dao");
         Transaction tx = null;
-        Trainee trainee = null;
+        
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
             tx = session.beginTransaction();
-            int id = Integer.valueOf(traineeId.substring(3));
-            Trainee traineeDetails = (Trainee) session.get(Trainee.class, id);
-            Criteria cr = session.createCriteria(Trainee.class);
-            cr.add(Restrictions.eq("isRemoved", false));
-            //trainee.setIsRemoved(true);
-            trainee = traineeDetails;
+            
+           Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
+           // Criteria cr = session.createCriteria(Trainee.class);
+           
+            //cr.add(Restrictions.eq("isRemoved", false));
+            if(!trainee.getIsRemoved()){
+                System.out.println( traineeId+ "dao1");
+
+                return trainee;
+                            }
             tx.commit();
         } catch(HibernateException e) {
 
@@ -166,17 +173,16 @@ public class EmployeeDaoImpl {
             }
             e.printStackTrace();
         }
-        return trainee;  
+        return null;  
     }
 
-    public void deleteTrainerById(String removeEmployeeId) {
+    public void deleteTrainerById(int removeEmployeeId) {
         Transaction tx = null;
         
         try (Session session = EmployeeFactory.getTrainerFactory().openSession();) {
 
             tx = session.beginTransaction();
-            int id = Integer.valueOf(removeEmployeeId.substring(3));
-            Trainer trainer = (Trainer) session.get(Trainer.class, id);
+            Trainer trainer = (Trainer) session.get(Trainer.class, removeEmployeeId);
             
             Criteria cr = session.createCriteria(Trainer.class);
             cr.add(Restrictions.eq("isRemoved", false));
@@ -194,14 +200,13 @@ public class EmployeeDaoImpl {
   
     }
 
-    public void deleteTraineeById(String removeEmployeeId) {
+    public void deleteTraineeById(int removeEmployeeId) {
        Transaction tx = null;
         
         try (Session session = EmployeeFactory.getTrainerFactory().openSession();) {
 
             tx = session.beginTransaction();
-            int id = Integer.valueOf(removeEmployeeId.substring(3));
-            Trainee trainee = (Trainee) session.get(Trainee.class, id);
+            Trainee trainee = (Trainee) session.get(Trainee.class, removeEmployeeId);
             
             Criteria cr = session.createCriteria(Trainee.class);
             cr.add(Restrictions.eq("isRemoved", false));
@@ -220,13 +225,13 @@ public class EmployeeDaoImpl {
     
     }
 
-   public void modifyTrainerDetailsById(String trainerId, Trainer trainer) {
+   public void modifyTrainerDetailsById(int trainerId, Trainer trainer) {
         Transaction tx = null;
         String message = "Trainer details not updated successfully";
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
-        int id = Integer.valueOf(trainerId.substring(3));
+      
 
-            Trainer trainers = (Trainer) session.get(Trainer.class, id);
+            Trainer trainers = (Trainer) session.get(Trainer.class, trainerId);
             tx = session.beginTransaction();
            
             trainers.setFirstName(trainer.getFirstName());
@@ -235,6 +240,8 @@ public class EmployeeDaoImpl {
             trainers.setDateOfBirth(trainer.getDateOfBirth());
             trainers.setMobileNumber(trainer.getMobileNumber());
             trainers.setBloodGroup(trainer.getBloodGroup());
+            trainers.setTraineeDetails(trainer.getTraineeDetails());
+            
             session.update(trainers);
             message = "Trainer Details updated Successfully";
             tx.commit();
@@ -248,14 +255,14 @@ public class EmployeeDaoImpl {
         }        
                       
     }
-    public void modifyTraineeDetailsById(String traineeId, Trainee trainee) {
+    public void modifyTraineeDetailsById(int traineeId, Trainee trainee) {
 
         Transaction tx = null;
         String message = "Trainee details not updated successfully";
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
-        int id = Integer.valueOf(traineeId.substring(3));
+       
 
-            Trainee trainees = (Trainee) session.get(Trainee.class, id);
+            Trainee trainees = (Trainee) session.get(Trainee.class, traineeId);
             tx = session.beginTransaction();
            
             trainees.setFirstName(trainee.getFirstName());

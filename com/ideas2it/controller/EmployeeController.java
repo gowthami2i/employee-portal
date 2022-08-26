@@ -103,7 +103,8 @@ public class EmployeeController {
                         if (searchDisplay == 1) {
 
                             logger.info("Enter the Employee Id to search Trainer");
-                            String employeeIdTrainer = scanner.next();
+                            int employeeIdTrainer = scanner.nextInt();
+                            System.out.println(employeeIdTrainer +"controller");
                             searchedTrainer = employeeServiceImpl.searchTrainerDetailsById(employeeIdTrainer);
 
                             if (searchedTrainer != null) {
@@ -113,6 +114,10 @@ public class EmployeeController {
                                                    + searchedTrainer.getEmail()+"\n"+"Trainer Mobile Number :"
                                                    + searchedTrainer.getMobileNumber()+"\n"+"Trainer Blood Group :"
                                                    +searchedTrainer.getBloodGroup()+"\n" );
+                                 for(int i = 0; i<searchedTrainer.getTraineeDetails().size();i++) {
+
+                                      logger.info("{}",searchedTrainer.getTraineeDetails().get(i).getFirstName());
+                                 }
                             } else {
 
                                 logger.error("Invalid Employee ID");
@@ -120,7 +125,7 @@ public class EmployeeController {
                          } else if (searchDisplay == 2) {
                      
                             logger.info("Enter the Employee Id to search Trainee");
-                            String employeeIdTrainee = scanner.next();
+                            int employeeIdTrainee = scanner.nextInt();
                             searchedTrainee = employeeServiceImpl.searchTraineeDetailsById(employeeIdTrainee);
 
                         if (searchedTrainee != null) {
@@ -142,10 +147,11 @@ public class EmployeeController {
                         logger.info("1.Trainer");
                         logger.info("2.Trainee");
 		        int searchUpdateDisplay = scanner.nextInt();
+                        System.out.println(searchUpdateDisplay);
                         Trainer searchedUpdateTrainer = null;
                         Trainee searchedUpdateTrainee = null;
                         logger.info("Enter the Employee Id to search Trainer");
-                        String employeeId = scanner.next();
+                        int employeeId = scanner.nextInt();
                         if(searchUpdateDisplay == 1) {     
                    
                             searchedUpdateTrainer = employeeServiceImpl.searchTrainerDetailsById(employeeId);
@@ -179,14 +185,14 @@ public class EmployeeController {
                        if (removeEmployee == 1) {
 
                            logger.info("Enter the Employee Id to remove Trainer");
-                           String removeEmployeeId = scanner.next();
+                           int removeEmployeeId = scanner.nextInt();
                            employeeServiceImpl.deleteTrainerDetails(removeEmployeeId);
                            System.out.println(removeEmployeeId);
                            logger.info("Suceesfully removed ");
                        } else if (removeEmployee == 2) {
                         
                            logger.info("Enter the Employee Id to remove Trainer");
-                           String removeEmployeeId = scanner.next();
+                           int removeEmployeeId = scanner.nextInt();
                            employeeServiceImpl.deleteTraineeDetails(removeEmployeeId);
                            logger.info("Suceesfully removed ");      
                        }
@@ -210,16 +216,7 @@ public class EmployeeController {
 	               }
                    break;
                    case 7:
-              
-                       logger.info("Enter 1 for Associate  Trainer for Trainee");
-                       logger.info("Enter 2 for Associate Trainee for Trainer");
-                       int choiceForAssociation = scanner.nextInt();
-
-                       if (choiceForAssociation == 1) {
-                           associatedEmployee(choiceForAssociation, scanner);
-                       } else if (choiceForAssociation == 2) {
-                           associatedEmployee(choiceForAssociation, scanner);
-                       }
+                   assignTraineesToTrainer(scanner);
                    break;
                    case 8:
               
@@ -1001,5 +998,29 @@ public class EmployeeController {
          
 
          
+    }
+
+    public static void  assignTraineesToTrainer(Scanner scanner) {
+        List<Trainee> traineeDetails = new ArrayList<>();
+        System.out.println("Enter the Trainer id");
+        int trainerId = scanner.nextInt();
+
+        Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
+        System.out.println("enter the Trainee id (ex: 1,2,3)");
+        String[] traineeId = scanner.next().split(",");
+        int id=0;
+        System.out.println(trainer.getTraineeDetails().size()+"before");
+        for(int i=0; i<traineeId.length; i++) {
+             id =Integer.valueOf(traineeId[i]);
+             
+         if(employeeServiceImpl.searchTraineeDetailsById(id) != null) {
+            trainer.getTraineeDetails().add(employeeServiceImpl.searchTraineeDetailsById(id)); 
+           }
+            
+        }
+        System.out.println(trainer.getTraineeDetails().size()+"after");
+
+        //trainer.setTraineeDetails(traineeDetails);
+        employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);
     }
 }

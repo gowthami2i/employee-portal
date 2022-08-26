@@ -1,5 +1,10 @@
 package com.ideas2it.model;
 import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.List;
 @Entity
 @Table(name ="trainer")
 public class Trainer extends Employee  {
@@ -9,6 +14,10 @@ public class Trainer extends Employee  {
     @Column(name = "experience")
     private int experience;
 
+    @OneToMany(targetEntity = Trainee.class, cascade = {CascadeType.ALL},fetch = FetchType.EAGER )
+    @JoinColumn(name = "TrainerId")
+
+    private List<Trainee> traineeDetails;
     public int getProject () {
 	return project;	
     }
@@ -24,6 +33,15 @@ public class Trainer extends Employee  {
 	return experience;
     }
 
+    public List<Trainee> getTraineeDetails() {
+
+        return traineeDetails;
+    }
+
+    public void setTraineeDetails(List<Trainee> traineeDetails) {
+
+        this.traineeDetails = traineeDetails;
+    }
   
 }
 

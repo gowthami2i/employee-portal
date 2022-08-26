@@ -4,7 +4,13 @@ import java.sql.Date;
 import java.time.Period;
 import java.util.UUID;
 
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @MappedSuperclass
 
 public class Employee {
@@ -42,6 +48,7 @@ public class Employee {
     private String panCard;
 
     @Column(name = "IsRemoved")
+    @ColumnDefault("0")
     private boolean isRemoved;
     
     public void setFirstName (String firstName) {

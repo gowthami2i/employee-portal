@@ -83,8 +83,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link Trainer>} currentTrainer object
      */
     @Override
-    public Trainer searchTrainerDetailsById(String EmployeeId) {
-       
+    public Trainer searchTrainerDetailsById(int EmployeeId) {
+        System.out.println(EmployeeId +"service");
         Trainer currentTrainer = employeeDaoImpl.retrieveTrainerbyId(EmployeeId);
         return currentTrainer;  
     }
@@ -94,8 +94,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link Trainee>} currentTrainee object
      */
     @Override  
-    public Trainee searchTraineeDetailsById(String EmployeeId) {
-       
+    public Trainee searchTraineeDetailsById(int EmployeeId) {
+         System.out.println(EmployeeId+ "service");
         Trainee currentTrainee = employeeDaoImpl.retrieveTraineebyId(EmployeeId);
         return currentTrainee;  
     }
@@ -106,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void deleteTrainerDetails(String removeEmployeeId) {
+    public void deleteTrainerDetails(int removeEmployeeId) {
        
         employeeDaoImpl.deleteTrainerById(removeEmployeeId);  
         System.out.println(removeEmployeeId);
@@ -117,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void deleteTraineeDetails(String removeEmployeeId) {
+    public void deleteTraineeDetails(int removeEmployeeId) {
 
         employeeDaoImpl.deleteTraineeById(removeEmployeeId);
     }
@@ -129,7 +129,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void updatedTrainerDetails(String employeeId, Trainer searchedUpdateTrainer) {
+    public void updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer) {
          
         employeeDaoImpl.modifyTrainerDetailsById(employeeId, searchedUpdateTrainer);       
     } 
@@ -141,7 +141,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */                               
     @Override
-    public void updatedTraineeDetails(String employeeId, Trainee searchedUpdateTrainee) {
+    public void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee) {
          
         employeeDaoImpl.modifyTraineeDetailsById(employeeId, searchedUpdateTrainee);
        
