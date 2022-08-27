@@ -84,9 +84,8 @@ public interface EmployeeService {
      */
     void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee);
 
-    void associateEmployee(String trainerId, String traineeId, int userChoice);
     int getIdFromDao();
-    Set<Employee> getAssocaiteEmployeeDetailsById(String associateEmployeeId);
+
    
     
 }

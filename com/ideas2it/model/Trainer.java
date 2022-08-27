@@ -14,13 +14,13 @@ public class Trainer extends Employee  {
     @Column(name = "experience")
     private int experience;
 
-    @OneToMany(targetEntity = Trainee.class, cascade = {CascadeType.ALL},fetch = FetchType.EAGER )
-    @JoinColumn(name = "TrainerId")
-
+    @OneToMany(targetEntity = Trainee.class, cascade = {CascadeType.MERGE},fetch = FetchType.EAGER )
+    @JoinColumn(name = "trainerid")
     private List<Trainee> traineeDetails;
+
     public int getProject () {
 	return project;	
-    }
+    }3
     public void setProject(int project) {
 	this.project = project;    
     }

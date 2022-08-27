@@ -12,13 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @MappedSuperclass
-
 public class Employee {
    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id",nullable = false)
-    int Id;
+    int id; //error
 
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -30,8 +29,8 @@ public class Employee {
     private Date dateOfBirth;
 
     
-    @Column(name ="Employee_Id")
-    private String id;
+    @Column(name ="employee_id")
+    private String employeeId;
 
     @Column(name = "mobilenumber")
     private long  mobileNumber;
@@ -47,7 +46,7 @@ public class Employee {
     @Column(name = "pancard")
     private String panCard;
 
-    @Column(name = "IsRemoved")
+    @Column(name = "isremoved")
     @ColumnDefault("0")
     private boolean isRemoved;
     
@@ -72,14 +71,14 @@ public class Employee {
 	return lastName;
     }
 
-    public void setId(String id) {
+    public void setEmployeeId(String employeeId) {
 
-	this.id = id;
+	this.employeeId = employeeId;
     }
     
-    public String getId() {
+    public String getEmployeeId() {
 
-	return id;
+	return employeeId;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {

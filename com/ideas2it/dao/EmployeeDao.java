@@ -84,9 +84,8 @@ public interface EmployeeDao {
      * @return{@void}
      */
     void deleteTraineeById(int removeEmployeeId);
-    void employeeAssociation(String trainerID, String traineeID, int choice);
+    
     int getIdFromTable();
 
-    Set<Employee> retrieveAssociateEmployeeDetails(String employeeAssociateId);
 
 }

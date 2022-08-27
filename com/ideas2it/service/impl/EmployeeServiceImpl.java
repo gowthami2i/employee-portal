@@ -146,23 +146,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDaoImpl.modifyTraineeDetailsById(employeeId, searchedUpdateTrainee);
        
     }
-    @Override
-    public void associateEmployee(String trainerId, String traineeId, int userChoice) {
-    
-       employeeDaoImpl.employeeAssociation(trainerId, traineeId, userChoice );
-
-    }
     public int getIdFromDao() {
     
         return employeeDaoImpl.getIdFromTable();
 
-    }
-    public  Set<Employee> getAssocaiteEmployeeDetailsById(String associateEmployeeId) {
-      
-
-        return employeeDaoImpl.retrieveAssociateEmployeeDetails(associateEmployeeId);
-    }
-     
-
+    }     
 
 }
