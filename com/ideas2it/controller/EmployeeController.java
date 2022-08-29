@@ -57,8 +57,8 @@ public class EmployeeController {
 	        logger.info("Enter 4 to update details");
                 logger.info("Enter 5 to Remove Employee");
                 logger.info("Enter 6 Display Details");
-                logger.info("Enter 7 to Associate Trainer or Trainee");
-                logger.info("Enter 8 to Display Associate Details");		
+                logger.info("Enter 7 to Associate Trainer to Trainee");
+                logger.info("Enter 8 to Associate Trainee to Trainer");		
 	        logger.info("please Enter your Selection");
             
 	        int viewMenuInput=scanner.nextInt();
@@ -114,12 +114,13 @@ public class EmployeeController {
                                               + searchedTrainer.getEmail()+"\n"+"Trainer Mobile Number :"
                                               + searchedTrainer.getMobileNumber()+"\n"+"Trainer Blood Group :"
                                               +searchedTrainer.getBloodGroup()+"\n" );
-                                 for(int i = 0; i<searchedTrainer.getTraineeDetails().size();i++) {
+                                for(int i = 0; i<searchedTrainer.getTraineeDetails().size();i++) {
 
-                                      System.out.println(searchedTrainer.getTraineeDetails().get(i).getFirstName());
-                                 }
+                                    System.out.println(String.format("%d"+"Trainee Name :"+searchedTrainer.getTraineeDetails().get(i).getFirstName()+"\n"
+                                                      +"Trainee Id :" +searchedTrainer.getTraineeDetails().get(i).getEmployeeId()+"\n", i+1));
+                                }
                             } else {
-
+ 
                                 logger.error("Invalid Employee ID");
                             }
                          } else if (searchDisplay == 2) {
@@ -134,7 +135,12 @@ public class EmployeeController {
                                                 +searchedTrainee.getFirstName()+"\n" +"\n"+"Trainee Email :" 
                                                 + searchedTrainee.getEmail()+"\n"+"Trainee Mobile Number :"
                                                 + searchedTrainee.getMobileNumber()+"\n"+"Trainee  Blood Group :"
-                                                +searchedTrainee.getBloodGroup() );
+                                                +searchedTrainee.getBloodGroup() );                                                                                                                                                                                                                                                                     
+
+                                System.out.println("\n"+"Trainer Name : " +searchedTrainee.getTrainerDetails().getFirstName()+"\n"
+                                                  +"Trainer Id : "+ searchedTrainee.getTrainerDetails().getEmployeeId());
+                                               
+
                         } else {
 
                             logger.error("Invalid Employee ID");
@@ -174,7 +180,7 @@ public class EmployeeController {
                                 logger.info("updated succesfully"); 
                             }
                         }
-                            break;  
+                        break;  
                    case 5 :
                    
                        logger.info("Which details you want to Remove ? ");
@@ -217,6 +223,9 @@ public class EmployeeController {
                    break;
                    case 7:
                        assignTraineesToTrainer(scanner);
+                   break;
+                   case 8:
+                       assignTrainerToTrainee(scanner);
                    break;
                                                         
 	           default:
@@ -941,25 +950,62 @@ public class EmployeeController {
         }	    
         return searchedUpdateTrainee;                  
     }     
-     
+    /**
+     * method is used to Associate Trainees to Trainer
+     * @param {@link Scanner}scanner object
+     * @return {@link void} 
+     */ 
     public static void  assignTraineesToTrainer(Scanner scanner) {
     
         System.out.println("Enter the Trainer id");
         int trainerId = scanner.nextInt();                                    
         Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
-        System.out.println("enter the Trainee id (ex: 1,2,3)");
-        String[] traineeId = scanner.next().split(",");
-        int id=0;
-        System.out.println(trainer.getTraineeDetails().size()+"before");
-        for(int i=0; i<traineeId.length; i++) {
+        if(trainer != null) {   
+            System.out.println("enter the Trainee id (ex: 1,2,3)");
+            String[] traineeId = scanner.next().split(",");
+            int id=0;
+                                                                 
+            for(int i=0; i<traineeId.length; i++) {
                                                                                                    
-            id =Integer.valueOf(traineeId[i]);     
-            if(employeeServiceImpl.searchTraineeDetailsById(id) != null) {
+                id =Integer.valueOf(traineeId[i]);     
+                if(employeeServiceImpl.searchTraineeDetailsById(id) != null) {
                trainer.getTraineeDetails().add(employeeServiceImpl.searchTraineeDetailsById(id)); 
-            }   
+            }  
+            else {
+                System.out.println("no trainer");
+            } 
        }
-
-          
+                                                                                                                                                                                                                                                                                                    
         employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);
+       }
+       else {                                                                                             
+            System.out.println("no trainer");
+       }
+    }                                                                                                                                
+    /**
+     * method is used to Associate Trainer to Trainee
+     * @param {@link Scanner}scanner object
+     * @return {@link void} 
+     */
+    public static void  assignTrainerToTrainee(Scanner scanner) {
+    
+        System.out.println("Enter the Trainee id");
+        int traineeId = scanner.nextInt();                                    
+        Trainee trainee = employeeServiceImpl.searchTraineeDetailsById(traineeId);
+        if(trainee != null) {
+            System.out.println("enter the Trainer id ");
+            int trainerId = scanner.nextInt();
+            int id=0;
+            if(employeeServiceImpl.searchTrainerDetailsById(trainerId) != null) {
+                
+                trainee.setTrainerDetails(employeeServiceImpl.searchTrainerDetailsById(trainerId)); 
+            }   
+          
+            employeeServiceImpl.updatedTraineeDetails(traineeId , trainee);
+        }
+        else {
+            System.out.println("no trainee");
+        }
     }
+
 }

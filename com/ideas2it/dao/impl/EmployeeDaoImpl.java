@@ -35,8 +35,13 @@ import com.ideas2it.confiq.ConnectionConfiq;
 import com.ideas2it.factory.EmployeeFactory;
 
 
-public class EmployeeDaoImpl {   
-
+public class EmployeeDaoImpl {
+   
+    /**
+     * method is used to Insert Trainer into Database
+     * @param {@link Trainer}trainer object
+     * @return {@link void} 
+     */
     public void insertTrainer(Trainer trainer) {
        
         Session session = EmployeeFactory.getTrainerFactory().openSession();
@@ -54,7 +59,12 @@ public class EmployeeDaoImpl {
         }
     
    }
-   public void insertTrainee(Trainee trainee) {     
+    /**
+     * method is used to Insert Trainee into Database
+     * @param {@link Trainee}trainee object
+     * @return {@link void} 
+     */
+    public void insertTrainee(Trainee trainee) {     
        
        Session session = EmployeeFactory.getTrainerFactory().openSession();
        Transaction tx = null;
@@ -71,13 +81,16 @@ public class EmployeeDaoImpl {
         }  
               
     }
-     
+    /**
+     * method is used to getTrainerDetails into Database
+     * @return {@link List<Trainer>}trainer object 
+     */ 
     public List<Trainer> getTrainerDetails() {
         
-    List<Trainer> trainers = new ArrayList<>();
+        List<Trainer> trainers = new ArrayList<>();
 
-       Session session = EmployeeFactory.getTrainerFactory().openSession();
-       Transaction tx = null;
+        Session session = EmployeeFactory.getTrainerFactory().openSession();
+        Transaction tx = null;
       
         try {
             tx = session.beginTransaction();
@@ -88,18 +101,20 @@ public class EmployeeDaoImpl {
             tx.commit();   
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
-             e.printStackTrace(); 
-        } finally {
-            session.close(); 
-        }
+                e.printStackTrace(); 
+        } 
        return trainers;
-    }  
+    } 
+    /**
+     * method is used to getTraineeDetails into Database
+     * @return {@link List<Trainee>}trainee object 
+     */ 
     public List<Trainee> getTraineeDetails() {
     
-       List<Trainee> trainees = new ArrayList<>();
-       Session session = EmployeeFactory.getTrainerFactory().openSession();
-       Transaction tx = null;
-      
+        List<Trainee> trainees = new ArrayList<>();
+        Session session = EmployeeFactory.getTrainerFactory().openSession();
+        Transaction tx = null;
+                                    
         try {
             tx = session.beginTransaction();
             Criteria cr = session.createCriteria(Trainee.class);
@@ -119,28 +134,36 @@ public class EmployeeDaoImpl {
         System.out.println(trainerId + "dao");
         Transaction tx = null;
         Trainer trainerDetails = null;
-        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        Session session = null;
+        try {
+            session = EmployeeFactory.getTrainerFactory().openSession();
             tx = session.beginTransaction();
             trainerDetails = (Trainer) session.get(Trainer.class, trainerId);
-            trainerDetails.getTraineeDetails().forEach(trainee->System.out.println(trainee.getFirstName()));
-            tx.commit();
-        } catch(HibernateException e) {
+            //trainerDetails.getTraineeDetails().forEach(trainee->System.out.println(trainee.getFirstName()+"dao"));
+           // tx.commit();
+             
+        } catch(NullPointerException | HibernateException e) {
 
             if(tx!=null) {
 
                 tx.rollback();
             }
             e.printStackTrace();
+        } finally {
+            //if(session != null) 
+                //session.close();
         }
         return trainerDetails;
     }
     public Trainee retrieveTraineebyId(int traineeId) {
    
         Transaction tx = null;
+        //Trainee traineeDetails = null;
         
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
             tx = session.beginTransaction();   
-            Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
+             Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
+             trainee.getTrainerDetails();
             if(!trainee.getIsRemoved()){
                 return trainee;
             }
@@ -235,7 +258,7 @@ public class EmployeeDaoImpl {
     public void modifyTraineeDetailsById(int traineeId, Trainee trainee) {
 
         Transaction tx = null;
-        String message = "Trainee details not updated successfully";
+        System.out.println("dao"+traineeId);
         try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
        
             Trainee trainees = (Trainee) session.get(Trainee.class, traineeId);
@@ -245,9 +268,10 @@ public class EmployeeDaoImpl {
             trainees.setEmail(trainee.getEmail());
             trainees.setDateOfBirth(trainee.getDateOfBirth());
             trainees.setMobileNumber(trainee.getMobileNumber());
-            trainees.setBloodGroup(trainee.getBloodGroup());
+            trainees.setBloodGroup(trainee.getBloodGroup()); 
+            trainees.setTrainerDetails(trainee.getTrainerDetails());
             session.update(trainees);
-            message = "Trainer Details updated Successfully";
+            
             tx.commit();
         } catch(HibernateException e) {
 

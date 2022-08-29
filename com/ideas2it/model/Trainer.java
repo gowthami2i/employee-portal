@@ -1,10 +1,14 @@
-package com.ideas2it.model;
-import javax.persistence.*;
+     package com.ideas2it.model;
+//simport javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import java.util.List;
+import javax.persistence.FetchType;
 @Entity
 @Table(name ="trainer")
 public class Trainer extends Employee  {
@@ -14,13 +18,13 @@ public class Trainer extends Employee  {
     @Column(name = "experience")
     private int experience;
 
-    @OneToMany(targetEntity = Trainee.class, cascade = {CascadeType.MERGE},fetch = FetchType.EAGER )
+    @OneToMany(targetEntity = Trainee.class, cascade = {CascadeType.MERGE},fetch = FetchType.EAGER)
     @JoinColumn(name = "trainerid")
     private List<Trainee> traineeDetails;
 
     public int getProject () {
 	return project;	
-    }3
+    }
     public void setProject(int project) {
 	this.project = project;    
     }
