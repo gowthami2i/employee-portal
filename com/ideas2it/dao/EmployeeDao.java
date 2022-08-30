@@ -17,19 +17,19 @@ import com.ideas2it.model.Employee;
 public interface EmployeeDao {
 
     /**
-     * method is used to get the Trainers details in the map 
+     * get the Trainers details in the map 
      * @return {@link  Map<String,Trainer>} trainers object
      */
    List<Trainer> getTrainerDetails();
    
     /**
-     * method is used to get the Trainee details in the map 
+     * get the Trainee details in the map 
      * @return {@link  Map<String,Trainee>} trainee object
      */
     List<Trainee> getTraineeDetails();
 
     /**
-     * method is used to Insert Trainer in to the map 
+     * Insert Trainer in to the Database
      * @param {@link String} employeeId
      * @param {@link Trainer} trainer Object
      * @return {@link void }
@@ -37,7 +37,7 @@ public interface EmployeeDao {
      void insertTrainer(Trainer trainer);
     
     /**
-     * method is used to Insert Trainee in to the map 
+     * Insert Trainee in to the Database 
      * @param {@link String} employeeId
      * @param {@link Trainee} trainee Object
      * @return {@link void }
@@ -45,47 +45,44 @@ public interface EmployeeDao {
     void insertTrainee(Trainee trainee);
     
     /**
-     * method is used to retrieve the Trainer by EmployeeId in the map 
+     * retrieve the Trainer by EmployeeId in the map 
      * @param {@link String} employeeId
      * @return {@link Trainer} trainer Object
      */
     Trainer retrieveTrainerbyId(int trainerId);
     
     /**
-     * method is used to retrieve the Trainee by EmployeeId in the map 
+     * retrieve the Trainee by EmployeeId in the map 
      * @param {@link String} employeeId
      * @return {@link Trainee} trainee Object
      */
     Trainee retrieveTraineebyId(int traineeId);
 
     /**
-     * method is used to Update the Trainer by  using EmployeeId and user update object in the  
+     * Update the Trainer by using EmployeeId and user update object in the  
      * @param {@link String} employeeId
      * @param {@link Trainer} searchedUpdateTrainer Object
      */    
     void modifyTrainerDetailsById(int trainerId, Trainer trainer);
 
     /**
-     * method is used to Update the Trainee by  using EmployeeId and user updateobject  
+     * Update the Trainee by  using EmployeeId and user updateobject  
      * @param {@link String} employeeId
      * @param {@link Trainee} searchedUpdateTrainee Object
      */
     void modifyTraineeDetailsById(int traineeId, Trainee trainee);
     
     /**
-     * method is used to delete the Trainer by  using EmployeeId  
+     * Delete the Trainer by  using EmployeeId  
      * @param {@link String} employeeId
      */       
     void deleteTrainerById(int removeEmployeeId) ;
 
     /**
-     * method is used to delete the Trainee by using EmployeeId  
+     * Delete the Trainee by using EmployeeId  
      * @param {@link String} employeeId
      * @return{@void}
      */
     void deleteTraineeById(int removeEmployeeId);
-    
-    int getIdFromTable();
-
 
 }

@@ -8,10 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import javax.persistence.*;
-import org.hibernate.*;
-
-
 
 import java.util.Map;
 import java.util.HashMap;
@@ -20,11 +16,6 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ideas2it.model.Employee;
@@ -34,6 +25,16 @@ import com.ideas2it.dao.EmployeeDao;
 import com.ideas2it.confiq.ConnectionConfiq;
 import com.ideas2it.factory.EmployeeFactory;
 
+/**
+* <h1>EmployeeDaoImpl</h1>
+*
+* The EmployeeDaoImpl class is used to collect the returning object from EmployeeServiceImpl
+* and send to the Database 
+*
+* @author  Gowtham P
+* @version java 1.0
+* 
+*/
 
 public class EmployeeDaoImpl {
    
@@ -44,15 +45,15 @@ public class EmployeeDaoImpl {
      */
     public void insertTrainer(Trainer trainer) {
        
-        Session session = EmployeeFactory.getTrainerFactory().openSession();
-        Transaction tx = null; 
+        Session session = EmployeeFactory.getEmployeeFactory().openSession();
+        Transaction transaction = null; 
         try {
-            tx = session.beginTransaction();
+            transaction = session.beginTransaction();
             System.out.println(trainer.getFirstName());
             session.save(trainer);
-            tx.commit();   
+            transaction.commit();   
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
+            if (transaction!=null) transaction.rollback();
              e.printStackTrace(); 
         } finally {
             session.close(); 
@@ -66,15 +67,15 @@ public class EmployeeDaoImpl {
      */
     public void insertTrainee(Trainee trainee) {     
        
-       Session session = EmployeeFactory.getTrainerFactory().openSession();
-       Transaction tx = null;
+       Session session = EmployeeFactory.getEmployeeFactory().openSession();
+       Transaction transaction = null;
       
         try {
-            tx = session.beginTransaction();
+            transaction = session.beginTransaction();
             session.save(trainee);
-            tx.commit();   
+            transaction.commit();   
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
+            if (transaction!=null) transaction.rollback();
              e.printStackTrace(); 
         } finally {
             session.close(); 
@@ -89,18 +90,18 @@ public class EmployeeDaoImpl {
         
         List<Trainer> trainers = new ArrayList<>();
 
-        Session session = EmployeeFactory.getTrainerFactory().openSession();
-        Transaction tx = null;
+        Session session = EmployeeFactory.getEmployeeFactory().openSession();
+        Transaction transaction = null;
       
         try {
-            tx = session.beginTransaction();
-            Criteria cr = session.createCriteria(Trainer.class);
-            cr.add(Restrictions.eq("isRemoved", false));
-            List<Trainer>result= cr.list();
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Trainer.class);
+            criteria.add(Restrictions.eq("isRemoved", false));
+            List<Trainer>result= criteria.list();
             trainers = result; 
-            tx.commit();   
+            transaction.commit();   
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
+            if (transaction!=null) transaction.rollback();
                 e.printStackTrace(); 
         } 
        return trainers;
@@ -112,128 +113,144 @@ public class EmployeeDaoImpl {
     public List<Trainee> getTraineeDetails() {
     
         List<Trainee> trainees = new ArrayList<>();
-        Session session = EmployeeFactory.getTrainerFactory().openSession();
-        Transaction tx = null;
+        Session session = EmployeeFactory.getEmployeeFactory().openSession();
+        Transaction transaction = null;
                                     
         try {
-            tx = session.beginTransaction();
-            Criteria cr = session.createCriteria(Trainee.class);
-            cr.add(Restrictions.eq("isRemoved", false));
-            List<Trainee>result= cr.list();
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Trainee.class);
+            criteria.add(Restrictions.eq("isRemoved", false));
+            List<Trainee>result= criteria.list();
             trainees = result; 
-            tx.commit();   
+            transaction.commit();   
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
+            if (transaction!=null) transaction.rollback();
              e.printStackTrace(); 
         } finally {
             session.close(); 
         }
        return trainees;
-    }           
+    } 
+    /**
+     * method is used to retrieve the Trainer by EmployeeId in the map 
+     * @param {@link String} employeeId
+     * @return {@link Trainer} trainer Object
+     */          
     public Trainer retrieveTrainerbyId(int trainerId) {
-        System.out.println(trainerId + "dao");
-        Transaction tx = null;
+      
+        Transaction transaction = null;
         Trainer trainerDetails = null;
         Session session = null;
         try {
-            session = EmployeeFactory.getTrainerFactory().openSession();
-            tx = session.beginTransaction();
+            session = EmployeeFactory.getEmployeeFactory().openSession();
+            transaction = session.beginTransaction();
             trainerDetails = (Trainer) session.get(Trainer.class, trainerId);
-            //trainerDetails.getTraineeDetails().forEach(trainee->System.out.println(trainee.getFirstName()+"dao"));
-           // tx.commit();
              
         } catch(NullPointerException | HibernateException e) {
 
-            if(tx!=null) {
+            if(transaction!=null) {
 
-                tx.rollback();
+                transaction.rollback();
             }
             e.printStackTrace();
-        } finally {
-            //if(session != null) 
-                //session.close();
-        }
+        } 
         return trainerDetails;
     }
+    /**
+     * method is used to retrieve the Trainee by EmployeeId in the map 
+     * @param {@link String} employeeId
+     * @return {@link Trainee} trainee Object
+     */
     public Trainee retrieveTraineebyId(int traineeId) {
    
-        Transaction tx = null;
-        //Trainee traineeDetails = null;
-        
-        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
-            tx = session.beginTransaction();   
+        Transaction transaction = null;
+                
+        try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+             transaction = session.beginTransaction();   
              Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
              trainee.getTrainerDetails();
             if(!trainee.getIsRemoved()){
                 return trainee;
             }
-            tx.commit();
+            transaction.commit();
         } catch(HibernateException e) {
 
-            if(tx!=null) {
+            if(transaction!=null) {
 
-                tx.rollback();
+                transaction.rollback();
             }
             e.printStackTrace();
         }
         return null;  
     }
-
+    /**
+     * method is used to delete the Trainer by  using EmployeeId  
+     * @param {@link String} employeeId
+     */
     public void deleteTrainerById(int removeEmployeeId) {
-        Transaction tx = null;
+        Transaction transaction = null;
         
-        try (Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        try (Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
 
-            tx = session.beginTransaction();
+            transaction = session.beginTransaction();
             Trainer trainer = (Trainer) session.get(Trainer.class, removeEmployeeId); 
-            Criteria cr = session.createCriteria(Trainer.class);
-            cr.add(Restrictions.eq("isRemoved", false));
+            Criteria criteria = session.createCriteria(Trainer.class);
+            criteria.add(Restrictions.eq("isRemoved", false));
             trainer.setIsRemoved(true);
             session.update(trainer);
-            tx.commit();
+            transaction.commit();
         } catch (HibernateException e) {
 
-            if(tx != null) {
-                tx.rollback();
+            if(transaction != null) {
+                transaction.rollback();
             }
             e.printStackTrace();
         } 
   
     }
-
-    public void deleteTraineeById(int removeEmployeeId) {
-       Transaction tx = null;
+    /**
+     * method is used to delete the Trainee by using EmployeeId  
+     * @param {@link String} employeeId
+     * @return{@void}
+     */
+    public void deleteTraineeById(int employeeId) {
+       Transaction transaction = null;
         
-        try (Session session = EmployeeFactory.getTrainerFactory().openSession();) {
-
-            tx = session.beginTransaction();
-            Trainee trainee = (Trainee) session.get(Trainee.class, removeEmployeeId);
+       try (Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+                                
+           transaction = session.beginTransaction();
+           Trainee trainee = (Trainee) session.get(Trainee.class, employeeId);
             
-            Criteria cr = session.createCriteria(Trainee.class);
-            cr.add(Restrictions.eq("isRemoved", false));
-            trainee.setIsRemoved(true);
-            session.update(trainee);
+           Criteria criteria = session.createCriteria(Trainee.class);
+           criteria.add(Restrictions.eq("isRemoved", false));
+           trainee.setIsRemoved(true);
+           session.update(trainee);
 
-            tx.commit();
-        } catch (HibernateException e) {
+           transaction.commit();
+       } catch (HibernateException e) {
 
-            if(tx != null) {
-                tx.rollback();
+            if(transaction != null) {
+                transaction.rollback();
             }
             e.printStackTrace();
         } 
   
     
     }
+    /**
+     * method is used to Update the Trainer by  using EmployeeId and user update object in the  
+     * @param {@link String} employeeId
+     * @param {@link Trainer} searchedUpdateTrainer Object
+     */
 
-   public void modifyTrainerDetailsById(int trainerId, Trainer trainer) {
-        Transaction tx = null;
+    public void modifyTrainerDetailsById(int trainerId, Trainer trainer) {
+        Transaction transaction = null;
         String message = "Trainer details not updated successfully";
-        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
       
 
             Trainer trainers = (Trainer) session.get(Trainer.class, trainerId);
-            tx = session.beginTransaction();
+            transaction = session.beginTransaction();
            
             trainers.setFirstName(trainer.getFirstName());
             trainers.setLastName(trainer.getLastName());
@@ -244,25 +261,30 @@ public class EmployeeDaoImpl {
             trainers.setTraineeDetails(trainer.getTraineeDetails());
             
             session.update(trainers);
-            tx.commit();
+            transaction.commit();
         } catch(HibernateException e) {
 
-            if(tx!=null) {
+            if(transaction!=null) {
 
-                tx.rollback();
+                transaction.rollback();
             }
             e.printStackTrace();
         }        
                       
     }
+    /**
+     * method is used to Update the Trainee by  using EmployeeId and user updateobject  
+     * @param {@link String} employeeId
+     * @param {@link Trainee} searchedUpdateTrainee Object
+     */
     public void modifyTraineeDetailsById(int traineeId, Trainee trainee) {
 
-        Transaction tx = null;
+        Transaction transaction = null;
         System.out.println("dao"+traineeId);
-        try(Session session = EmployeeFactory.getTrainerFactory().openSession();) {
+        try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
        
             Trainee trainees = (Trainee) session.get(Trainee.class, traineeId);
-            tx = session.beginTransaction();
+            transaction = session.beginTransaction();
             trainees.setFirstName(trainee.getFirstName());
             trainees.setLastName(trainee.getLastName());
             trainees.setEmail(trainee.getEmail());
@@ -272,38 +294,19 @@ public class EmployeeDaoImpl {
             trainees.setTrainerDetails(trainee.getTrainerDetails());
             session.update(trainees);
             
-            tx.commit();
+            transaction.commit();
         } catch(HibernateException e) {
 
-            if(tx!=null) {
+            if(transaction!=null) {
 
-                tx.rollback();
+                transaction.rollback();
             }
             e.printStackTrace();
         }        
                       
     }
-  
-   public int getIdFromTable() {
-
-        String sql = "select max(Id) from trainer";
-        String sql1 = "select max(Id) from trainee";
-        int id = 0;
-        try (Connection connection = ConnectionConfiq.getInstance();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             PreparedStatement statement1 = connection.prepareStatement(sql1);
-             ResultSet resultset = statement.executeQuery();
-             ResultSet resultset1 = statement1.executeQuery();) {
-             while (resultset.next() && resultset1.next() ) {
-                 id =(resultset.getInt("max(id)")+resultset1.getInt("max(id)"));
-             }       
-        } catch (SQLException e) {
-
-            System.out.println(e);
-        }
-        return id;    
-    }
-
+ 
+    
 }
 
 

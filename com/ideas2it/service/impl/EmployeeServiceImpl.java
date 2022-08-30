@@ -40,10 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      */ 
     @Override
     public  void addTrainer( Trainer trainer) {
+
 	System.out.println(trainer.getFirstName());
-        employeeDaoImpl.insertTrainer(trainer);
-		
+        employeeDaoImpl.insertTrainer(trainer);		
     }
+
     /**
      * method is used to add Trainee 
      * @param {@link String} employeeId
@@ -55,27 +56,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeDaoImpl.insertTrainee( trainee);
     }
+
     /**
      * method is used to get Trainer from Dao 
-     * @return {@link Map<String , Trainer>} trainersFromDao object
+     * @return {@link Map<String , Trainer>} trainers object
      */
 
     @Override 
     public List<Trainer> getTrainersFromDao() {
 
-        List<Trainer> trainersFromDao = employeeDaoImpl.getTrainerDetails();
-        return trainersFromDao;
+        List<Trainer> trainers = employeeDaoImpl.getTrainerDetails();
+        return trainers;
     }
 
     /**
      * method is used to get Trainee from Dao 
-     * @return {@link Map<String , Trainer>} traineesFromDao object
+     * @return {@link Map<String , Trainer>} trainees
      */
     @Override
     public List<Trainee> getTraineesFromDao() {
 
-       List<Trainee> traineesFromDao = employeeDaoImpl.getTraineeDetails();
-        return traineesFromDao;
+       List<Trainee> trainees = employeeDaoImpl.getTraineeDetails();
+        return trainees;
     } 
 
     /**
@@ -84,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Trainer searchTrainerDetailsById(int EmployeeId) {
-        System.out.println(EmployeeId +"service");
+
         Trainer currentTrainer = employeeDaoImpl.retrieveTrainerbyId(EmployeeId);
         return currentTrainer;  
     }
@@ -95,7 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override  
     public Trainee searchTraineeDetailsById(int EmployeeId) {
-         System.out.println(EmployeeId+ "service");
+  
         Trainee currentTrainee = employeeDaoImpl.retrieveTraineebyId(EmployeeId);
         return currentTrainee;  
     }
@@ -106,11 +108,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void deleteTrainerDetails(int removeEmployeeId) {
+    public void deleteTrainerDetails(int employeeId) {
        
-        employeeDaoImpl.deleteTrainerById(removeEmployeeId);  
-        System.out.println(removeEmployeeId);
+        employeeDaoImpl.deleteTrainerById(employeeId);  
     }
+
     /**
      * method is used to deleteTraineeDetails
      * @param {@link String} removeEmployeeId
@@ -146,10 +148,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDaoImpl.modifyTraineeDetailsById(employeeId, searchedUpdateTrainee);
        
     }
-    public int getIdFromDao() {
-    
-        return employeeDaoImpl.getIdFromTable();
-
-    }     
 
 }

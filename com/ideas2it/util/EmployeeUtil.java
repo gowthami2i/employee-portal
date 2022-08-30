@@ -23,25 +23,10 @@ public class  EmployeeUtil {
     public static int findAgeFromDateOfBirth(LocalDate EmployeedateOfBirth) {
          
         LocalDate todayDate = LocalDate.now();
-
+                               
         return Period.between(EmployeedateOfBirth, todayDate).getYears();
-        }
-
-    /**
-     * method is used to generate Id for the Employee
-     * @return {@link String} id
-     */
-    public static String generateId(int id) {
-        
-        
-        int idCounter = id;
-        LocalDate currentDate = LocalDate.now();
-        int year = currentDate.getYear();
-        idCounter ++;
-        String getId = ("I"+year%100+idCounter);
-        return getId;
-
     }
+
     /**
      * method is used to Validate the Employee's FirstName
      * @param {@link String} name
@@ -129,6 +114,11 @@ public class  EmployeeUtil {
         return uniqueId;
 
     }
+    /**
+     * method is used to Validate a Email Id.
+     * @param {@link String} email
+     * @return {@link boolean) isValidMail
+     */
     public static boolean isValidateEmail(String email) throws EmailMismatchException {
         
       boolean isValidMail = EmailValidator.getInstance().isValid(email);

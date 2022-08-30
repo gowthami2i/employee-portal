@@ -9,8 +9,10 @@ import javax.persistence.Table;
 import javax.persistence.OneToMany;
 import java.util.List;
 import javax.persistence.FetchType;
+
 @Entity
 @Table(name ="trainer")
+
 public class Trainer extends Employee  {
 
     @Column(name = "no_of_project")

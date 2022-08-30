@@ -13,7 +13,7 @@ public class EmployeeFactory {
     private static SessionFactory factory;
     private static Logger logger = LoggerFactory.getLogger(EmployeeFactory.class);
 
-    public static SessionFactory getTrainerFactory() {
+    public static SessionFactory getEmployeeFactory() {
 
         try {
 

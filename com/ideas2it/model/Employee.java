@@ -15,13 +15,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.MappedSuperclass;
+
+/**
+* <h1>Employee </h1>
+* Employee class is an pojo class.
+* Creating employee data in the program
+*
+* @author  Gowtham P
+* @version java 1.0
+* 
+*/
+
 @MappedSuperclass
 public class Employee {
    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id",nullable = false)
-    int id; //error
+    private int id; 
 
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -41,7 +52,7 @@ public class Employee {
     @Column(name = "date_of_joinning")
     private Date dateOfJoinning;
     
-    @Column(name = "email")
+    @Column(name = "email_id")
     private String email;
     @Column(name = "bloodgroup")
     private String bloodGroup;
@@ -55,106 +66,89 @@ public class Employee {
     private boolean isRemoved;
     
     public void setFirstName (String firstName) {
-
 	this.firstName = firstName;
     } 
    
     public String getFirstName() {
-
 	return firstName;
     }
     
-
     public void setLastName(String lastName) {
-
 	this.lastName = lastName;
     } 
 
     public String getLastName() {
-
 	return lastName;
     }
 
-    public void setEmployeeId(String employeeId) {
-
-	this.employeeId = employeeId;
+    public void setId(int id) {
+	this.id = id;
     }
-    
-    public String getEmployeeId() {
 
-	return employeeId;
+    public int getId() {
+	return id;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-
 	this.dateOfBirth = dateOfBirth;
     }
     public Date getDateOfBirth() {
-
        return dateOfBirth;
     }
 
     public long getMobileNumber() {
-
 	return mobileNumber;
     }
     public void setMobileNumber(long mobileNumber) {
-
 	this.mobileNumber = mobileNumber;
     }
-
    
     public String getEmail() {
-
 	return email;
     }
-    public void setEmail(String email) {
 
+    public void setEmail(String email) {
 	this.email=email;
     }
-    public void setDateOfJoinning(Date dateOfJoinning) {
 
+    public void setDateOfJoinning(Date dateOfJoinning) {
 	this.dateOfJoinning = dateOfJoinning;
     }
 
     public Date getDateOfJoinning() {
-
 	return dateOfJoinning;
     }
-    public String getBloodGroup() {
 
+    public String getBloodGroup() {
 	return bloodGroup;
     }
-    public void setBloodGroup(String bloodGroup) {
 
+    public void setBloodGroup(String bloodGroup) {
 	this.bloodGroup = bloodGroup;
     }
-    public String getPanCard() {
 
+    public String getPanCard() {
         return panCard;
-   }
-   public void setPanCard(String panCard) {
-        
+    }
+
+    public void setPanCard(String panCard) {        
         this.panCard = panCard;
     }
-    public long getAadharNumber() {
 
+    public long getAadharNumber() {
         return aadharNumber;
     }
-    public  void setAadharNumber(long aadharNumber) {
-        
+
+    public  void setAadharNumber(long aadharNumber) {        
         this.aadharNumber = aadharNumber;
     }
-    public boolean getIsRemoved() {
 
+    public boolean getIsRemoved() {
        return isRemoved;
     }
 
     public void setIsRemoved(boolean isRemoved) {
-
        this.isRemoved = isRemoved;
     }
-
-
    
 }

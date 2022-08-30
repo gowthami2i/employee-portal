@@ -10,6 +10,16 @@ import java.util.ArrayList;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.model.Trainee;
 import com.ideas2it.model.Employee;
+/**
+* <h1>EmployeeServiceImpl</h1>
+*
+* collects the returning object from EmployeeController
+* and send to the EmployeeDeoImpl class and vise versa
+*
+* @author  Gowtham P
+* @version java 1.0
+* 
+*/
 
 public interface EmployeeService {
     
@@ -83,10 +93,6 @@ public interface EmployeeService {
      * @return {@link void} 
      */
     void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee);
-
-    int getIdFromDao();
-
-   
     
 }
 

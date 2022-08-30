@@ -19,7 +19,7 @@
       <!-- Assume employeedetails1 is the database name -->
    
       <property name = "hibernate.connection.url">
-         jdbc:mysql://localhost/employeedetails1
+         jdbc:mysql://localhost/employeedetails
       </property>
    
       <property name = "hibernate.connection.username">
