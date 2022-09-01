@@ -1,31 +1,34 @@
 package com.ideas2it.model;
 
 import java.sql.Date;
+
 import java.time.Period;
+
 import java.util.UUID;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
+
 import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Table;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 /**
-* <h1>Employee </h1>
-* Employee class is an pojo class.
-* Creating employee data in the program
-*
-* @author  Gowtham P
-* @version java 1.0
-* 
-*/
-
+ * <h1>Employee </h1>
+ * Employee class is an pojo class.
+ * Creating employee data in the program
+ *
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 @MappedSuperclass
 public class Employee {
    
@@ -42,22 +45,25 @@ public class Employee {
 
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
-
     
     @Column(name ="employee_id")
     private String employeeId;
 
     @Column(name = "mobilenumber")
     private long  mobileNumber;
+
     @Column(name = "date_of_joinning")
     private Date dateOfJoinning;
     
     @Column(name = "email_id")
     private String email;
+
     @Column(name = "bloodgroup")
     private String bloodGroup;
+
     @Column(name = "aadharnumber")
     private long aadharNumber;
+
     @Column(name = "pancard")
     private String panCard;
 
@@ -65,8 +71,8 @@ public class Employee {
     @ColumnDefault("0")
     private boolean isRemoved;
     
-    public void setFirstName (String firstName) {
-	this.firstName = firstName;
+    public void setFirstName(String firstName) {
+       this.firstName = firstName;
     } 
    
     public String getFirstName() {

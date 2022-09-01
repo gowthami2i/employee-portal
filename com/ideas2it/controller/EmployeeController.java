@@ -1,17 +1,17 @@
 package com.ideas2it.controller;
 
-import java.util.Scanner;
-import java.util.UUID;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.List;
-import java.util.ArrayList; 
-import java.util.InputMismatchException; 
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.UUID;
+
 import java.time.format.DateTimeParseException;
-import java.lang.IllegalArgumentException;
 import java.time.LocalDate;
+
+import java.lang.IllegalArgumentException;
+
 import java.sql.Date;
  
 import org.slf4j.Logger;
@@ -24,27 +24,28 @@ import com.ideas2it.service.impl.EmployeeServiceImpl;
 import com.ideas2it.service.EmployeeService;
 import com.ideas2it.util.EmployeeUtil;
 import com.ideas2it.exception.EmailMismatchException;
+
 /**
-* <h1>Employee Controller</h1>
-* The Employee Controller class is used to get infromation from the user  and
-* display the output on the screen
-*
-* @author  Gowtham P
-* @version java 1.0
-* 
-*/
+ * <h1>Employee Controller</h1>
+ * The Employee Controller class is used to get infromation from the user  and
+ * display the output on the screen
+ *
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 public class EmployeeController {
     
-    private static Logger logger = LoggerFactory.getLogger(EmployeeController.class);
-    private static EmployeeService employeeServiceImpl = new EmployeeServiceImpl();
-    public static void viewMenu() {
+    private  final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+    private  final EmployeeService employeeServiceImpl = new EmployeeServiceImpl();
+
+    public void viewMenu() {
        
         Scanner scanner = new Scanner(System.in);       
         try {
 
             boolean employeeData = true;
             while (employeeData) {
-
                 logger.info("welcome  to IDEAS2IT Employee Details");
 	        logger.info("\n");
 	        logger.info("Enter 1 to Add Employee as a Trainer ");
@@ -62,79 +63,86 @@ public class EmployeeController {
                 switch (menuOption) {
 
                     case 1 :
+
                         logger.info("Enter how many Trainers to be added");                             			
 	                int noOfTrainer = scanner.nextInt();
-                        for (int i = 0; i <noOfTrainer; i++) {
-
-		            Trainer trainers = getTrainersDetailsFromUser(scanner);
-                            System.out.println(trainers.getFirstName());                      
-                            employeeServiceImpl.addTrainer(trainers);  
+                        for (int i = 1; i <= noOfTrainer; i++) {
+ 
+       		            Trainer trainers = getTrainersDetailsFromUser(scanner);                      
+                            boolean isAddTrainer = employeeServiceImpl.addTrainer(trainers);                
+                            if (isAddTrainer) {  
+                                    logger.info("Inserted succesfully");
+                            } else {
+                                    logger.info("not Inserted");
+                            } 
 	                }		    
  	                break;
                      
 		    case 2 :
+
                         logger.info("Enter how many Trainees to be added");                             			
 	                int noOfTrainee = scanner.nextInt();
-		        for(int i=0; i < noOfTrainee; i++) {
+		        for (int i=1; i <= noOfTrainee; i++) {
 
 		            Trainee trainees = getTraineesDetailsFromUser(scanner);
-                            employeeServiceImpl.addTrainee(trainees);           
+                            boolean isAddTrainee = employeeServiceImpl.addTrainee(trainees);
+                            if (isAddTrainee) {  
+                                    logger.info("Inserted succesfully");
+                            } else {
+                                    logger.info("not Inserted");
+                            }           
  		        }	                                                                  		    
 	                break; 
                              
-                    case 3 : 
+                    case 3 :
+ 
                         logger.info("Which details you want to display ? ");
                         logger.info("1.Trainer");
                         logger.info("2.Trainee");
-		        int searchDisplay = scanner.nextInt();
-                        Trainer searchedTrainer = null;
-                        Trainee searchedTrainee = null;
+		        int displayEmployee = scanner.nextInt();
+                        Trainer trainer = null;
+                        Trainee trainee = null;
                   
-                        if (searchDisplay == 1) {
+                        if (displayEmployee== 1) {
 
                             logger.info("Enter the Employee Id to search Trainer");
                             int employeeIdTrainer = scanner.nextInt();
-                            searchedTrainer = employeeServiceImpl.searchTrainerDetailsById(employeeIdTrainer);
+                            trainer = employeeServiceImpl.searchTrainerDetailsById(employeeIdTrainer);
 
-                            if (searchedTrainer != null) {
+                            if (trainer != null) {
 
-                                logger.info("Trainer First Name :" 
-                                           +"\n"+searchedTrainer.getFirstName() +"\n"+"Trainer Email :" 
-                                           + searchedTrainer.getEmail()+"\n"+"Trainer Mobile Number :"
-                                           + searchedTrainer.getMobileNumber()+"\n"+"Trainer Blood Group :"
-                                           +searchedTrainer.getBloodGroup()+"\n");
-                                /*System.out.println(searchedTrainer.getEmail());
                                 StringBuilder stringBuilder = new StringBuilder();
-                                System.out.println(stringBuilder.append("Trainer First Name   :"+searchedTrainer.getFirstName()+"\n")
-                                                                .append("Trainer Email        :"+ searchedTrainer.getEmail()+"\n") 
-                                                                .append("Trainer Mobile Number:"+ searchedTrainer.getMobileNumber()+"\n")
-                                                                .append("Trainer Blood Group  :"+ searchedTrainer.getBloodGroup()+"\n"));  */                                                                      
-                                for(int i = 0; i<searchedTrainer.getTraineeDetails().size();i++) {
+                                logger.info("{}", stringBuilder.append("Trainer First Name   :"+trainer.getFirstName()+"\n")
+                                                               .append("Trainer Email        :"+ trainer.getEmail()+"\n") 
+                                                               .append("Trainer Mobile Number:"+ trainer.getMobileNumber()+"\n")
+                                                               .append("Trainer Blood Group  :"+ trainer.getBloodGroup()+"\n\n"));
+                                                                       
+                                for(int i = 0; i<trainer.getTraineeDetails().size();i++) {
                                     
-                                    System.out.println(String.format("%d"+"Trainee Name :"+searchedTrainer.getTraineeDetails().get(i).getFirstName()+"\n"
-                                                      +"Trainee Id :" +searchedTrainer.getTraineeDetails().get(i).getId()+"\n", i+1));
+                                    logger.info("{}",(String.format("%d ."+"Trainee Name :"+trainer.getTraineeDetails().get(i).getFirstName()+"\n"
+                                                      +"Trainee Id :" +trainer.getTraineeDetails().get(i).getId()+"\n", i+1)));
                                 }
                             } else {
  
                                 logger.error("Invalid Employee ID");
                             }
-                         } else if (searchDisplay == 2) {
+                         } else if (displayEmployee== 2) {
                      
                             logger.info("Enter the Employee Id to search Trainee");
                             int employeeIdTrainee = scanner.nextInt();
-                            searchedTrainee = employeeServiceImpl.searchTraineeDetailsById(employeeIdTrainee);
+                            trainee = employeeServiceImpl.searchTraineeDetailsById(employeeIdTrainee);
 
-                        if (searchedTrainee != null) {
+                        if (trainee != null) {
 
-                            logger.info("Trainee First Name :"  
-                                       +searchedTrainee.getFirstName()+"\n" +"\n"+"Trainee Email :" 
-                                       + searchedTrainee.getEmail()+"\n"+"Trainee Mobile Number :"
-                                       + searchedTrainee.getMobileNumber()+"\n"+"Trainee  Blood Group :"
-                                       +searchedTrainee.getBloodGroup() );                                                                                                                                                                                                                                                                     
+                            StringBuilder stringBuilder = new StringBuilder();
+                            logger.info("{}", stringBuilder.append("Trainee First Name   :"+trainee.getFirstName()+"\n")
+                                                           .append("Trainee Email        :"+ trainee.getEmail()+"\n") 
+                                                           .append("Trainee Mobile Number:"+ trainee.getMobileNumber()+"\n")
+                                                           .append("Trainee Blood Group  :"+ trainee.getBloodGroup()));
+                                                                                                                                                                                                                                                                                                    
 
-                            System.out.println("\n"+"Trainer Name : " +searchedTrainee.getTrainerDetails().getFirstName()+"\n"
-                                              +"Trainer Id : "+ searchedTrainee.getTrainerDetails().getId());
-                                               
+                            logger.info("{}",stringBuilder.append("\n"+"Trainer Name : " +trainee.getTrainerDetails().getFirstName()+"\n")
+                                                          .append("Trainer Id : "+ trainee.getTrainerDetails().getId()));                                               
 
                         } else {
                             logger.error("Invalid Employee ID");
@@ -147,32 +155,39 @@ public class EmployeeController {
                         logger.info("Which details you want to update ? ");
                         logger.info("1.Trainer");
                         logger.info("2.Trainee");
-		        int searchUpdateDisplay = scanner.nextInt();
-                        System.out.println(searchUpdateDisplay);
-                        Trainer searchedUpdateTrainer = null;
-                        Trainee searchedUpdateTrainee = null;
+		        int selectEmployeeType = scanner.nextInt();
+                        Trainer updateTrainer = null;
+                        Trainee updateTrainee = null;
                         logger.info("Enter the Employee Id to search Trainer");
                         int employeeId = scanner.nextInt();
-                        if(searchUpdateDisplay == 1) {     
+                        if(selectEmployeeType == 1) {     
                    
-                            searchedUpdateTrainer = employeeServiceImpl.searchTrainerDetailsById(employeeId);
-                        } else if (searchUpdateDisplay == 2) {
-                            searchedUpdateTrainee = employeeServiceImpl.searchTraineeDetailsById(employeeId);
+                            updateTrainer = employeeServiceImpl.searchTrainerDetailsById(employeeId);
+                        } else if (selectEmployeeType == 2) {
+                            updateTrainee = employeeServiceImpl.searchTraineeDetailsById(employeeId);
                         } else {
                                 System.out.println("Enter the valid data");
                         }
-                        if (searchedUpdateTrainer != null || searchedUpdateTrainee != null) {
+                        if (updateTrainer != null || updateTrainee != null) {
 
-                            if (searchUpdateDisplay == 1) {
+                            if (selectEmployeeType == 1) {
 
-                                Trainer  updatedTrainerDetails = updateTrainerDetails(scanner , searchedUpdateTrainer); 
-                                employeeServiceImpl.updatedTrainerDetails(employeeId , updatedTrainerDetails);  
-                                logger.info("updated succesfully");
-                            } else if (searchUpdateDisplay == 2) {
+                                Trainer  updatedTrainerDetails = updateTrainerDetails(scanner , updateTrainer); 
+                                boolean isUpdateTrainer = employeeServiceImpl.updatedTrainerDetails(employeeId , updatedTrainerDetails);
+                                if (isUpdateTrainer) {  
+                                    logger.info("updated succesfully");
+                                } else {
+                                    logger.info("not updated enter the valid trainer Id");
+                                }
+                            } else if (selectEmployeeType == 2) {
 
-                                Trainee updatedTraineeDetails= updateTraineeDetails(scanner , searchedUpdateTrainee); 
-                                employeeServiceImpl.updatedTraineeDetails(employeeId , updatedTraineeDetails); 
-                                logger.info("updated succesfully"); 
+                                Trainee updatedTraineeDetails= updateTraineeDetails(scanner , updateTrainee); 
+                                boolean isUpdateTrainee = employeeServiceImpl.updatedTraineeDetails(employeeId , updatedTraineeDetails); 
+                                if (isUpdateTrainee) {  
+                                    logger.info("updated succesfully");
+                                } else {
+                                    logger.info("not updated enter the valid trainer Id");
+                                }
                             } 
                         }
                        break; 
@@ -187,15 +202,25 @@ public class EmployeeController {
                        if (employee == 1) {
 
                            logger.info("Enter the Employee Id to remove Trainer");
-                           int removeEmployeeId = scanner.nextInt();
-                           employeeServiceImpl.deleteTrainerDetails(removeEmployeeId);
-                           logger.info("Suceesfully removed ");
+                           int removeEmployeeId = scanner.nextInt(); 
+                           boolean isDeleted = employeeServiceImpl.deleteTrainerDetails(removeEmployeeId);
+                           if (isDeleted) {
+                               logger.info("Suceesfully removed ");
+                           } else {
+                               logger.info("not removed enter valid Trainer Id");
+                           } 
+                           
                        } else if (employee == 2) {
                         
-                           logger.info("Enter the Employee Id to remove Trainer");
+                           logger.info("Enter the Employee Id to remove Trainee");
                            int removeEmployeeId = scanner.nextInt();
-                           employeeServiceImpl.deleteTraineeDetails(removeEmployeeId);
-                           logger.info("Suceesfully removed ");      
+                           boolean isDeleted = employeeServiceImpl.deleteTraineeDetails(removeEmployeeId);
+                            
+                           if (isDeleted) {
+                               logger.info("Suceesfully removed ");
+                           } else {
+                               logger.info("not removed enter valid Trainee Id");
+                           }      
                        }
                        break;
 
@@ -217,7 +242,7 @@ public class EmployeeController {
 	               }
                        break;
 
-                   case 7 :
+                   case 7:
 
                        assignTraineesToTrainer(scanner);
                        break;
@@ -254,14 +279,13 @@ public class EmployeeController {
      * @param {@link EmployeeService} employeeServiceImpl Object
      * @return {@link Trainer} trainer object
      */
-    public static Trainer getTrainersDetailsFromUser(Scanner scanner) {
+    public Trainer getTrainersDetailsFromUser(Scanner scanner) {
         
         Trainer trainers = new Trainer();
         try {
 
             boolean isCheckName = true;
             while (isCheckName) {
-
                 logger.info("Enter the FirstName");
                 String firstName = scanner.next();
                 boolean isValidateFirstName = EmployeeUtil.isValidateFirstName(firstName);
@@ -275,7 +299,6 @@ public class EmployeeController {
   
             boolean isCheckLastName = true;
             while (isCheckLastName) {
-
                 logger.info("Enter the LastName");
                 String LastName = scanner.next();
                 boolean isValidateLastName = EmployeeUtil.isValidateLastName(LastName);
@@ -291,13 +314,13 @@ public class EmployeeController {
              boolean isCheckDateFormat = true;
              while (isCheckDateFormat) {
                  try { 
+
                      logger.info("Enter the Date of Birth in the format(yyyy-mm-dd)");
                      String dob = scanner.next();
                      trainers.setDateOfBirth(Date.valueOf(dob));
                      int age = EmployeeUtil.findAgeFromDateOfBirth(LocalDate.parse(dob));
                      logger.info("{}",age);
-                     isCheckDateFormat = false;
-                    
+                     isCheckDateFormat = false;                    
                  } catch (IllegalArgumentException e) {
 
                      logger.error(" invalid date format"+ e);
@@ -307,7 +330,6 @@ public class EmployeeController {
  
             boolean isCheckMobileNumber = true;
             while (isCheckMobileNumber) {
-
                 logger.info("Enter the MobileNumber");
                 String mobileNumber = scanner.next();
                 boolean isValidateMobileNumber = EmployeeUtil.isValidateMobileNumber(mobileNumber);
@@ -323,7 +345,6 @@ public class EmployeeController {
                   
            boolean isCheckEmail = true;
            while (isCheckEmail) {
-
                try { 
 
                    logger.info("Enter the Email  ID");  
@@ -335,13 +356,13 @@ public class EmployeeController {
                        isCheckEmail = false;
                    }
                } catch (EmailMismatchException e) {
-                       logger.error("invalid" + e );
+
+                   logger.error("invalid" + e );
                }                                    
            }
            
            boolean isCheckAadharNumber = true;
            while (isCheckAadharNumber) {
-
                logger.info("Enter the AadharNumber");
                String AadharNumber = scanner.next();
                boolean isValidateAadharNumber = EmployeeUtil.isValidateAadharNumber(AadharNumber);
@@ -351,13 +372,13 @@ public class EmployeeController {
                    trainers.setAadharNumber(validatedAadharNumber);
                    isCheckAadharNumber = false;
                } else {
+
                    logger.error(" invalid AadharNumber");
                }
            }
    
            boolean isCheckPanCard = true;
            while (isCheckPanCard) {
-
                logger.info("Enter the PanCard");
                String panCard = scanner.next();
                boolean isValidatePanCard = EmployeeUtil.isValidatePanCard(panCard);
@@ -366,6 +387,7 @@ public class EmployeeController {
                    trainers.setPanCard(panCard);
                    isCheckPanCard= false;
                } else {
+
                   logger.error(" invalid Pan Number");
                }
            }  
@@ -373,7 +395,6 @@ public class EmployeeController {
                  
 	   boolean ischeckDateOfJoinning = true;
            while(ischeckDateOfJoinning) {
-
                try {
 
                    logger.info("Enter the Date of Joinning in the format(yyyy-mm-dd)");
@@ -381,13 +402,13 @@ public class EmployeeController {
                    trainers.setDateOfJoinning(Date.valueOf(dateOfJoinning)); 
                    ischeckDateOfJoinning = false;
                } catch (IllegalArgumentException e) {
+
                    logger.error(" invalid date format" + e);    
                }
            }
 	       
 	   boolean isCheckBloodGroup = true;
            while (isCheckBloodGroup) {
-
                logger.info("Enter Your BloodGroup");
                String bloodGroup = scanner.next();
                boolean isValidateBloodGroup = EmployeeUtil.isValidateBloodGroup(bloodGroup);
@@ -403,7 +424,6 @@ public class EmployeeController {
            logger.info("Enter your Experience");
            scanner.nextLine();
 	   while (!scanner.hasNext("[0-9]{0,2}")) {
-
                logger.info("invalid Experience Enter the valid Experience ");
                scanner.nextLine();
            }
@@ -414,19 +434,16 @@ public class EmployeeController {
 	   logger.info("Enter your no of Project"  );
            scanner.nextLine();
 	   while (!scanner.hasNext("[0-9]{0,2}")) {
-
                logger.info("Enter the valid Project");
                scanner.nextLine();
            }
 	   int project = scanner.nextInt();
 	   trainers.setProject(project);
-        
-
 	   logger.info("-----------------------------------");
        
-        } catch (Exception e) {
+        } catch (InputMismatchException exception) {
 
-            logger.error("invalid data"+e);
+            logger.error("invalid data"+exception);
             getTrainersDetailsFromUser( scanner);
         }     
 
@@ -440,14 +457,13 @@ public class EmployeeController {
      * @param {@link EmployeeService} employeeServiceImpl Object
      * @return {@link Trainee} trainee object
      */
-    public static Trainee getTraineesDetailsFromUser(Scanner scanner) {
+    public Trainee getTraineesDetailsFromUser(Scanner scanner) {
        
         Trainee trainees = new Trainee();
 	try {
 
             boolean isCheckName = true;
             while (isCheckName) {
-
                 logger.info("Enter the FirstName");
                 String firstName = scanner.next();
                 boolean isValidateFirstName = EmployeeUtil.isValidateFirstName(firstName);
@@ -463,7 +479,6 @@ public class EmployeeController {
   
             boolean isCheckLastName = true;
             while (isCheckLastName) {
-
                 logger.info("Enter the LastName");
                 String LastName = scanner.next();
                 boolean isValidateLastName = EmployeeUtil.isValidateLastName(LastName);
@@ -478,7 +493,6 @@ public class EmployeeController {
             }  
             boolean ischeckDateFormat = true;
             while (ischeckDateFormat) {
-
                 try {
 
                     logger.info("Enter the Date of Birth in the format(yyyy-mm-dd)");
@@ -496,7 +510,6 @@ public class EmployeeController {
 
             boolean isCheckMobileNumber = true;
             while (isCheckMobileNumber) {
-
                 logger.info("Enter the MobileNumber");
                 String mobileNumber = scanner.next();
                 boolean isValidateMobileNumber = EmployeeUtil.isValidateMobileNumber(mobileNumber);
@@ -511,19 +524,25 @@ public class EmployeeController {
                 }
             }
 	                
-	    logger.info("Enter the Email");
-            scanner.nextLine();
-            while (!scanner.hasNext("[a-zA-Z0-9]+[@][a-z]+[.][a-z]{2,3}")) {
+	    boolean isCheckEmail = true;
+           while (isCheckEmail) {
+               try { 
 
-                logger.error("Enter the valid Email Id  ");
-                scanner.nextLine();   
-            }
-	    String email = scanner.next();	
-            trainees.setEmail(email);
- 
+                   logger.info("Enter the Email  ID");  
+                   String email = scanner.next();
+                   boolean isValidateEmail = EmployeeUtil.isValidateEmail(email);
+                   if (isValidateEmail) {
+
+                       trainees.setEmail(email);
+                       isCheckEmail = false;
+                   }
+               } catch (EmailMismatchException e) {
+
+                   logger.error("invalid" + e );
+               }                                    
+           } 
             boolean isCheckAadharNumber = true;
             while (isCheckAadharNumber) {
-
                 logger.info("Enter the AadharNumber");
                 String AadharNumber = scanner.next();
                 boolean isValidateAadharNumber = EmployeeUtil.isValidateAadharNumber(AadharNumber);
@@ -540,7 +559,6 @@ public class EmployeeController {
    
             boolean isCheckPanCard = true;
             while (isCheckPanCard) {
-
                 logger.info("Enter the PanCard");
                 String panCard = scanner.next();
                 boolean isValidatePanCard = EmployeeUtil.isValidatePanCard(panCard);
@@ -556,7 +574,6 @@ public class EmployeeController {
                  
 	    boolean ischeckDateOfJoinning = true;
             while (ischeckDateOfJoinning) {
-
                 try {
 
                     logger.info("Enter the Date of Joinning in the format(yyyy-mm-dd)");
@@ -566,13 +583,12 @@ public class EmployeeController {
                     ischeckDateOfJoinning = false;
                 } catch (IllegalArgumentException e) {
 
-                     logger.error(" invalid date format");    
+                    logger.error(" invalid date format");    
                 }
             }
 	       
 	    boolean isCheckBloodGroup = true;
             while (isCheckBloodGroup) {
-
                 logger.info("Enter Your BloodGroup");
                 String bloodGroup = scanner.next();
                 boolean isValidateBloodGroup = EmployeeUtil.isValidateBloodGroup(bloodGroup);
@@ -588,7 +604,6 @@ public class EmployeeController {
             logger.info("Enter your Skillset");
             scanner.nextLine();
 	    while (!scanner.hasNext("[a-zA-Z]{0,15}")) {
-
                 logger.info("invalid  Enter the valid Skillset ");
                 scanner.nextLine();
             }
@@ -598,16 +613,15 @@ public class EmployeeController {
 	    logger.info("Enter your Number of Trainning Task");
             scanner.nextLine();
 	    while (!scanner.hasNext("[0-9]{0,2}")) {
-
                 logger.error("invalid Experience Enter the valid Trainning Task ");
                 scanner.nextLine();
             }
 	    int task = scanner.nextInt();
 	    trainees.setTask(task);
 
-        } catch (Exception e) {
+        } catch (InputMismatchException exception) {
 
-            logger.error("invalid data");
+            logger.error("invalid data" + exception);
             getTraineesDetailsFromUser( scanner);
         }     
 	
@@ -621,7 +635,7 @@ public class EmployeeController {
      * method is used to display the Trainer information 
      * @return {@link void} no return Value
      */
-    public static void displayTrainerDetails() {
+    public void displayTrainerDetails() {
 
         List <Trainer> showTrainer =  employeeServiceImpl.getTrainersFromDao();
         showTrainer.forEach(entry -> logger.info("Trainer id = "+entry.getId() +"\n"
@@ -639,7 +653,7 @@ public class EmployeeController {
      * method is used to display the Trainee information 
      * @return {@link void} no return value
      */
-    public static void displayTraineeDetails() {
+    public void displayTraineeDetails() {
          
         List <Trainee> showTrainee =  employeeServiceImpl.getTraineesFromDao();
         showTrainee.forEach(entry -> logger.info("Trainee id = "+entry.getId() +"\n\n"+"Trainee First Name : "
@@ -655,10 +669,10 @@ public class EmployeeController {
     /**
      * method is used to get update Trainer information by the user
      * @param {@link Scanner}scanner object
-     * @param {@link Trainer} searchedUpdateTrainer object
-     * @return {@link Trainer} searchedUpdateTrainer object
+     * @param {@link Trainer} updateTrainer object
+     * @return {@link Trainer} updateTrainer object
      */
-    public static Trainer updateTrainerDetails(Scanner scanner ,Trainer searchedUpdateTrainer) {
+    public Trainer updateTrainerDetails(Scanner scanner ,Trainer updateTrainer) {
 
         scanner.nextLine();
         boolean isCheckName = true;
@@ -671,7 +685,7 @@ public class EmployeeController {
                 boolean isValidateFirstName = EmployeeUtil.isValidateFirstName(firstName);
                 if(isValidateFirstName) {       
          
-                    searchedUpdateTrainer.setFirstName(firstName); 
+                    updateTrainer.setFirstName(firstName); 
                     isCheckName = false;
                 } else {
 
@@ -690,7 +704,7 @@ public class EmployeeController {
                 boolean isValidateLastName = EmployeeUtil.isValidateLastName(lastName); 
                 if (isValidateLastName) {          
    
-                    searchedUpdateTrainer.setLastName(lastName);
+                    updateTrainer.setLastName(lastName);
                     isCheckLastName = false;
                 } else {
 
@@ -711,7 +725,7 @@ public class EmployeeController {
                 if (isValidateMobileNumber) {
 
                     long validatedMobileNumber = Long.parseLong(mobileNumber);
-                    searchedUpdateTrainer.setMobileNumber(validatedMobileNumber);
+                    updateTrainer.setMobileNumber(validatedMobileNumber);
                     isCheckMobileNumber = false;
                 } else {
 
@@ -725,7 +739,7 @@ public class EmployeeController {
         String email = scanner.nextLine();
         if (!email.isEmpty()) {
 
-            searchedUpdateTrainer.setEmail(email);
+            updateTrainer.setEmail(email);
         }
                        
         boolean isCheckAadharNumber = true;
@@ -739,7 +753,7 @@ public class EmployeeController {
                 if (isValidateAadharNumber) {
 
                     long validatedAadharNumber = Long.parseLong(aadharNumber);
-                    searchedUpdateTrainer.setAadharNumber(validatedAadharNumber);
+                    updateTrainer.setAadharNumber(validatedAadharNumber);
                     isCheckAadharNumber = false;
                 } else {
 
@@ -758,7 +772,7 @@ public class EmployeeController {
                 boolean isValidatePanCard = EmployeeUtil.isValidatePanCard(panCard);
                 if (isValidatePanCard) {
 
-                    searchedUpdateTrainer.setPanCard(panCard);
+                    updateTrainer.setPanCard(panCard);
                     isCheckPanCard= false;
                 } else {
 
@@ -777,7 +791,7 @@ public class EmployeeController {
                 boolean isValidateBloodGroup = EmployeeUtil.isValidateBloodGroup(bloodGroup);
                 if (isValidateBloodGroup) {
 
-                    searchedUpdateTrainer.setBloodGroup(bloodGroup);
+                    updateTrainer.setBloodGroup(bloodGroup);
                     isCheckBloodGroup = false;
                 } else {
 
@@ -786,16 +800,16 @@ public class EmployeeController {
                 }
             }
         }	    
-        return searchedUpdateTrainer;                  
+        return updateTrainer;                  
     }
 
     /**
      * method is used to get update Trainee information by the user
      * @param {@link Scanner}scanner object
-     * @param {@link Trainee} searchedUpdateTrainee Object
-     * @return {@link Trainee} searchedUpdateTrainee object
+     * @param {@link Trainee} updateTrainee Object
+     * @return {@link Trainee} updateTrainee object
      */
-    public static Trainee updateTraineeDetails(Scanner scanner ,Trainee searchedUpdateTrainee) {
+    public Trainee updateTraineeDetails(Scanner scanner ,Trainee updateTrainee) {
         scanner.nextLine();
         boolean isCheckName = true;
         logger.info("Enter the Update name");
@@ -807,7 +821,7 @@ public class EmployeeController {
                 boolean isValidateFirstName = EmployeeUtil.isValidateFirstName(firstName);
                 if(isValidateFirstName) {  
               
-                    searchedUpdateTrainee.setFirstName(firstName); 
+                    updateTrainee.setFirstName(firstName); 
                     isCheckName = false;
                 }else {
 
@@ -826,7 +840,7 @@ public class EmployeeController {
                 boolean isValidateLastName = EmployeeUtil.isValidateLastName(lastName); 
                 if (isValidateLastName) { 
             
-                    searchedUpdateTrainee.setLastName(lastName);
+                    updateTrainee.setLastName(lastName);
                     isCheckLastName = false;
                 } else {
 
@@ -847,7 +861,7 @@ public class EmployeeController {
                 if (isValidateMobileNumber) {
 
                     long validatedMobileNumber = Long.parseLong(mobileNumber);
-                    searchedUpdateTrainee.setMobileNumber(validatedMobileNumber);
+                    updateTrainee.setMobileNumber(validatedMobileNumber);
                     isCheckMobileNumber = false;
                 } else {
 
@@ -861,7 +875,7 @@ public class EmployeeController {
         String email = scanner.nextLine();
         if (!email.isEmpty()) {
 
-            searchedUpdateTrainee.setEmail(email);
+            updateTrainee.setEmail(email);
         }
                        
         boolean isCheckAadharNumber = true;
@@ -875,7 +889,7 @@ public class EmployeeController {
                 if (isValidateAadharNumber) {
 
                     long validatedAadharNumber = Long.parseLong(aadharNumber);
-                    searchedUpdateTrainee.setAadharNumber(validatedAadharNumber);
+                    updateTrainee.setAadharNumber(validatedAadharNumber);
                     isCheckAadharNumber = false;
                 } else {
 
@@ -895,7 +909,7 @@ public class EmployeeController {
                 boolean isValidatePanCard = EmployeeUtil.isValidatePanCard(panCard);
                 if (isValidatePanCard) {
 
-                    searchedUpdateTrainee.setPanCard(panCard);
+                    updateTrainee.setPanCard(panCard);
                     isCheckPanCard= false;
                 } else {
 
@@ -914,7 +928,7 @@ public class EmployeeController {
                 boolean isValidateBloodGroup = EmployeeUtil.isValidateBloodGroup(bloodGroup);
                 if (isValidateBloodGroup) {
 
-                    searchedUpdateTrainee.setBloodGroup(bloodGroup);
+                    updateTrainee.setBloodGroup(bloodGroup);
                     isCheckBloodGroup = false;
                 } else {
 
@@ -923,7 +937,7 @@ public class EmployeeController {
                 }
             }
         }	    
-        return searchedUpdateTrainee;                  
+        return updateTrainee;                  
     }  
     
     /**
@@ -931,9 +945,9 @@ public class EmployeeController {
      * @param {@link Scanner}scanner object
      * @return {@link void} 
      */ 
-    public static void  assignTraineesToTrainer(Scanner scanner) {
+    public void  assignTraineesToTrainer(Scanner scanner) {
     
-        
+        System.out.println("Enter the Trainer id");
         int trainerId = scanner.nextInt();                                    
         Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
         if(trainer != null) {   
@@ -964,7 +978,7 @@ public class EmployeeController {
      * @param {@link Scanner}scanner object
      * @return {@link void} 
      */
-    public static void  assignTrainerToTrainee(Scanner scanner) {
+    public void  assignTrainerToTrainee(Scanner scanner) {
     
         System.out.println("Enter the Trainee id");
         int traineeId = scanner.nextInt();                                    

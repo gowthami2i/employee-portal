@@ -1,26 +1,39 @@
 package com.ideas2it.dao;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException; 
+import org.hibernate.Session; 
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
-import com.ideas2it.model.Trainer;
-import com.ideas2it.model.Trainee;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.sql.SQLException;
+
 import com.ideas2it.model.Employee;
+import com.ideas2it.model.Trainee;
+import com.ideas2it.model.Trainer;
+import com.ideas2it.dao.EmployeeDao;
 
+/**
+ * <h1>EmployeeDao</h1>
+ *
+ * collects the returning object from EmployeeServiceImpl and send to the Database
+ *
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 public interface EmployeeDao {
 
     /**
      * get the Trainers details in the map 
      * @return {@link  Map<String,Trainer>} trainers object
      */
-   List<Trainer> getTrainerDetails();
+    List<Trainer> getTrainerDetails();
    
     /**
      * get the Trainee details in the map 
@@ -34,7 +47,7 @@ public interface EmployeeDao {
      * @param {@link Trainer} trainer Object
      * @return {@link void }
      */
-     void insertTrainer(Trainer trainer);
+     boolean insertTrainer(Trainer trainer);
     
     /**
      * Insert Trainee in to the Database 
@@ -42,7 +55,7 @@ public interface EmployeeDao {
      * @param {@link Trainee} trainee Object
      * @return {@link void }
      */
-    void insertTrainee(Trainee trainee);
+    boolean insertTrainee(Trainee trainee);
     
     /**
      * retrieve the Trainer by EmployeeId in the map 
@@ -63,26 +76,26 @@ public interface EmployeeDao {
      * @param {@link String} employeeId
      * @param {@link Trainer} searchedUpdateTrainer Object
      */    
-    void modifyTrainerDetailsById(int trainerId, Trainer trainer);
+    boolean modifyTrainerDetailsById(int trainerId, Trainer trainer);
 
     /**
      * Update the Trainee by  using EmployeeId and user updateobject  
      * @param {@link String} employeeId
      * @param {@link Trainee} searchedUpdateTrainee Object
      */
-    void modifyTraineeDetailsById(int traineeId, Trainee trainee);
+    boolean modifyTraineeDetailsById(int traineeId, Trainee trainee);
     
     /**
      * Delete the Trainer by  using EmployeeId  
      * @param {@link String} employeeId
      */       
-    void deleteTrainerById(int removeEmployeeId) ;
+    boolean deleteTrainerById(int removeEmployeeId) ;
 
     /**
      * Delete the Trainee by using EmployeeId  
      * @param {@link String} employeeId
      * @return{@void}
      */
-    void deleteTraineeById(int removeEmployeeId);
+    boolean deleteTraineeById(int removeEmployeeId);
 
 }

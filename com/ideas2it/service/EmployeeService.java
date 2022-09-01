@@ -10,17 +10,18 @@ import java.util.ArrayList;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.model.Trainee;
 import com.ideas2it.model.Employee;
-/**
-* <h1>EmployeeServiceImpl</h1>
-*
-* collects the returning object from EmployeeController
-* and send to the EmployeeDeoImpl class and vise versa
-*
-* @author  Gowtham P
-* @version java 1.0
-* 
-*/
 
+/**
+ * <h1>EmployeeServiceImpl</h1>
+ *
+ * collects the returning object from EmployeeController 
+ * and send to the EmployeeDeoImpl class and vise versa
+ * 
+ *
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 public interface EmployeeService {
     
     /**
@@ -29,7 +30,7 @@ public interface EmployeeService {
      * @param {@link Trainer} trainer Object
      * @return {@link void }
      */
-   void addTrainer(Trainer trainer);
+    boolean addTrainer(Trainer trainer);
 
     /**
      * method is used to add Trainee 
@@ -37,7 +38,7 @@ public interface EmployeeService {
      * @param {@link Trainer} trainee Object
      * @return {@link void }
      */
-    void addTrainee(Trainee trainee);
+    boolean addTrainee(Trainee trainee);
    
     /**
      * method is used to get Trainer from Dao 
@@ -68,14 +69,14 @@ public interface EmployeeService {
      * @param {@link String} removeEmployeeId
      * @return {@link void} 
      */
-    void deleteTrainerDetails(int removeEmployeeId);
+    boolean deleteTrainerDetails(int removeEmployeeId);
     
     /**
      * method is used to deleteTraineeDetails
      * @param {@link String} removeEmployeeId
      * @return {@link void} 
      */
-    void deleteTraineeDetails(int removeEmployeeId);
+    boolean deleteTraineeDetails(int removeEmployeeId);
 
     
     /**
@@ -84,7 +85,7 @@ public interface EmployeeService {
      * @param {@link Trainer} searchedUpdateTrainer object
      * @return {@link void} 
      */
-    void updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer);
+    boolean updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer);
 
     /**
      * method is used to updateTraineeDetails
@@ -92,7 +93,7 @@ public interface EmployeeService {
      *@param {@link Trainer} searchedUpdateTrainee object
      * @return {@link void} 
      */
-    void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee);
+    boolean updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee);
     
 }
 

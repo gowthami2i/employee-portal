@@ -8,6 +8,15 @@ import org.slf4j.LoggerFactory;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.model.Trainee;
 
+/**
+ * <h1>EmployeeUtill </h1>
+ * Employee factory is an connection for the session factory.
+ * 
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
+
 public class EmployeeFactory {
 
     private static SessionFactory factory;

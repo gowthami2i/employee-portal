@@ -7,27 +7,22 @@ import com.ideas2it.dao.EmployeeDao;
 import com.ideas2it.dao.impl.EmployeeDaoImpl;
 import com.ideas2it.service.EmployeeService;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
 
 
 import java.time.LocalDate;
 import java.time.Period;
 
 /**
-* <h1>EmployeeServiceImpl</h1>
-*
-* The EmployeeServiceImpl class is used to collect the returning object from EmployeeController
-* and send to the EmployeeDeoImpl class and vise versa
-*
-* @author  Gowtham P
-* @version java 1.0
-* 
-*/
+ * <h1>EmployeeServiceImpl</h1>
+ *
+ * The EmployeeServiceImpl class is used to collect the returning object from EmployeeController
+ * and send to the EmployeeDeoImpl class and vise versa
+ *
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 public class EmployeeServiceImpl implements EmployeeService {
 
     private static EmployeeDaoImpl employeeDaoImpl = new EmployeeDaoImpl();
@@ -39,10 +34,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void }
      */ 
     @Override
-    public  void addTrainer( Trainer trainer) {
+    public  boolean addTrainer( Trainer trainer) {
 
-	System.out.println(trainer.getFirstName());
-        employeeDaoImpl.insertTrainer(trainer);		
+        boolean isAddTrainer = employeeDaoImpl.insertTrainer(trainer);	
+        return 	isAddTrainer;
     }
 
     /**
@@ -52,9 +47,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void }
      */
     @Override
-    public  void addTrainee(Trainee trainee) {
+    public boolean addTrainee(Trainee trainee) {
 
-        employeeDaoImpl.insertTrainee( trainee);
+        boolean isAddTrainee = employeeDaoImpl.insertTrainee( trainee);
+        return 	isAddTrainee;
     }
 
     /**
@@ -108,9 +104,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void deleteTrainerDetails(int employeeId) {
-       
-        employeeDaoImpl.deleteTrainerById(employeeId);  
+    public boolean deleteTrainerDetails(int employeeId) {
+         
+        boolean isDeleted = employeeDaoImpl.deleteTrainerById(employeeId);  
+        return isDeleted;
     }
 
     /**
@@ -119,9 +116,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void deleteTraineeDetails(int removeEmployeeId) {
+    public boolean deleteTraineeDetails(int removeEmployeeId) {
 
-        employeeDaoImpl.deleteTraineeById(removeEmployeeId);
+       boolean isDeleted = employeeDaoImpl.deleteTraineeById(removeEmployeeId);
+       return isDeleted;
     }
  
     /**
@@ -131,9 +129,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */
     @Override
-    public void updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer) {
+    public boolean updatedTrainerDetails(int employeeId, Trainer searchedUpdateTrainer) {
          
-        employeeDaoImpl.modifyTrainerDetailsById(employeeId, searchedUpdateTrainer);       
+       boolean isUpdateTrainer = employeeDaoImpl.modifyTrainerDetailsById(employeeId, searchedUpdateTrainer);  
+       return isUpdateTrainer;     
     } 
 
     /**
@@ -143,10 +142,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link void} 
      */                               
     @Override
-    public void updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee) {
+    public boolean updatedTraineeDetails(int employeeId, Trainee searchedUpdateTrainee) {
          
-        employeeDaoImpl.modifyTraineeDetailsById(employeeId, searchedUpdateTrainee);
-       
+        boolean isUpdateTrainee = employeeDaoImpl.modifyTraineeDetailsById(employeeId, searchedUpdateTrainee);
+        return isUpdateTrainee;
     }
 
 }

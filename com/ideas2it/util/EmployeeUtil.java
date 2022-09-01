@@ -10,9 +10,15 @@ import com.ideas2it.exception.EmailMismatchException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-
+/**
+ * <h1>EmployeeUtill </h1>
+ * Employee Utill is an Validation for the attributes.
+ * 
+ * @author  Gowtham P
+ * @version java 1.0
+ * 
+ */
 public class  EmployeeUtil {
-
 
     /**
      * method is used to find the age from Date Of Birth
