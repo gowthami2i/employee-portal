@@ -139,10 +139,11 @@ public class EmployeeController {
                                                            .append("Trainee Email        :"+ trainee.getEmail()+"\n") 
                                                            .append("Trainee Mobile Number:"+ trainee.getMobileNumber()+"\n")
                                                            .append("Trainee Blood Group  :"+ trainee.getBloodGroup()));
-                                                                                                                                                                                                                                                                                                    
-
-                            logger.info("{}",stringBuilder.append("\n"+"Trainer Name : " +trainee.getTrainerDetails().getFirstName()+"\n")
-                                                          .append("Trainer Id : "+ trainee.getTrainerDetails().getId()));                                               
+                            for(int i = 0; i<trainee.getTrainerDetails().size();i++) {                                                                                                                                                                                                                                                                        
+                                logger.info("jhyufhehfghfc");
+                                logger.info("{}",stringBuilder.append("\n"+"Trainer Name : " +trainee.getTrainerDetails().get(i).getFirstName()+"\n")
+                                                              .append("Trainer Id : "+ trainee.getTrainerDetails().get(i).getId()+"\n\n"));
+                            }                                               
 
                         } else {
                             logger.error("Invalid Employee ID");
@@ -249,7 +250,7 @@ public class EmployeeController {
 
                    case 8:
 
-                       assignTrainerToTrainee(scanner);
+                       assignTrainersToTrainee(scanner);
                        break;                                   
 	           default:
 	               logger.error("invalid data");
@@ -947,6 +948,7 @@ public class EmployeeController {
      */ 
     public void  assignTraineesToTrainer(Scanner scanner) {
     
+        List<Trainee> trainee = employeeServiceImpl.getTraineesFromDao();
         System.out.println("Enter the Trainer id");
         int trainerId = scanner.nextInt();                                    
         Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
@@ -955,22 +957,21 @@ public class EmployeeController {
             String[] traineeId = scanner.next().split(",");
             int id=0;
                                                                  
-            for(int i=0; i<traineeId.length; i++) {
-                                                                                                   
+            for (int i = 0; i < traineeId.length; i++) {
                 id =Integer.valueOf(traineeId[i]);     
-                if(employeeServiceImpl.searchTraineeDetailsById(id) != null) {
-               trainer.getTraineeDetails().add(employeeServiceImpl.searchTraineeDetailsById(id)); 
-            }  
-            else {
-                System.out.println("no trainer");
+                for (Trainee retriveTrainee : trainee) {
+                    if (retriveTrainee.getId() == id) {
+                        trainer.getTraineeDetails().add(retriveTrainee);
+                    } else {
+                        System.out.println("no trainee");
+                    }                
+                }
             } 
-       }
-                                                                                                                                                                                                                                                                                                    
-        employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);
-       }
-       else {                                                                                             
+            employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);           
+       } else {                                                                                             
             System.out.println("no trainer");
-       }
+       }                                                                                                                                                                                                                                                                                                            
+       
     } 
                                                                                                                                
     /**
@@ -978,25 +979,30 @@ public class EmployeeController {
      * @param {@link Scanner}scanner object
      * @return {@link void} 
      */
-    public void  assignTrainerToTrainee(Scanner scanner) {
-    
+    public void  assignTrainersToTrainee(Scanner scanner) {
+
+        List<Trainer> trainer = employeeServiceImpl.getTrainersFromDao();   
         System.out.println("Enter the Trainee id");
         int traineeId = scanner.nextInt();                                    
         Trainee trainee = employeeServiceImpl.searchTraineeDetailsById(traineeId);
-        if(trainee != null) {
-            System.out.println("enter the Trainer id ");
-            int trainerId = scanner.nextInt();
+        if(trainee != null) {   
+            System.out.println("enter the Trainer id (ex: 1,2,3)");
+            String[] trainerId = scanner.next().split(",");
             int id=0;
-            if(employeeServiceImpl.searchTrainerDetailsById(trainerId) != null) {
-                
-                trainee.setTrainerDetails(employeeServiceImpl.searchTrainerDetailsById(trainerId)); 
-            }   
-          
-            employeeServiceImpl.updatedTraineeDetails(traineeId , trainee);
-        }
-        else {
-            System.out.println("no trainee");
-        }
-    }
-
+                                                                 
+            for (int i = 0; i < trainerId.length; i++) {
+                id =Integer.valueOf(trainerId[i]);     
+                for (Trainer retriveTrainer : trainer) {
+                    if (retriveTrainer.getId() == id) {
+                        trainee.getTrainerDetails().add(retriveTrainer);
+                    } else {
+                        System.out.println("no trainee");
+                    }              
+                } 
+            } 
+           employeeServiceImpl.updatedTraineeDetails(traineeId , trainee);                   
+       } else {                                                                                             
+           System.out.println("no trainer" +traineeId);
+       } 
+    }                                                                                                                                                                                                                                                                                                 
 }

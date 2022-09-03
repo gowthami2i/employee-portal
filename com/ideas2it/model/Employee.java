@@ -32,11 +32,6 @@ import javax.persistence.Table;
 @MappedSuperclass
 public class Employee {
    
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id",nullable = false)
-    private int id; 
-
     @Column(name = "first_name",nullable = false)
     private String firstName;
 
@@ -46,16 +41,13 @@ public class Employee {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
     
-    @Column(name ="employee_id")
-    private String employeeId;
-
     @Column(name = "mobilenumber")
     private long  mobileNumber;
 
     @Column(name = "date_of_joinning")
     private Date dateOfJoinning;
     
-    @Column(name = "email_id")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "bloodgroup")
@@ -87,14 +79,7 @@ public class Employee {
 	return lastName;
     }
 
-    public void setId(int id) {
-	this.id = id;
-    }
-
-    public int getId() {
-	return id;
-    }
-
+  
     public void setDateOfBirth(Date dateOfBirth) {
 	this.dateOfBirth = dateOfBirth;
     }

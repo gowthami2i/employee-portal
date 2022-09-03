@@ -8,8 +8,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +30,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "trainee")
 public class Trainee extends Employee {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id",nullable = false)
+    private int id;
      
     @Column(name = "skill_set")
     private String skillSet;
@@ -31,11 +42,17 @@ public class Trainee extends Employee {
     @Column(name = "no_Of_Task")
     private int task;
 
-    @ManyToOne(targetEntity = Trainer.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "trainer_id")
-    private Trainer trainerDetails;
+    @ManyToMany(targetEntity = Trainer.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "trainerid_traineeid",
+               joinColumns = {@JoinColumn(name = "trainee_id")})
+    private List<Trainer> trainer;
 
-
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
     public void setSkillSet (String skillSet){
 	this.skillSet=skillSet;
     }
@@ -52,12 +69,12 @@ public class Trainee extends Employee {
 	return task;
     }
 
-    public void setTrainerDetails(Trainer trainerDetails) {
-        this.trainerDetails = trainerDetails;
+    public void setTrainerDetails(List<Trainer> trainer) {
+        this.trainer = trainer;
     }
 
-    public Trainer getTrainerDetails() {
-        return trainerDetails;
+    public List<Trainer> getTrainerDetails() {
+        return trainer;
     }
 
 }

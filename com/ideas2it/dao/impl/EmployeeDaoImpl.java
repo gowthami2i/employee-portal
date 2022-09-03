@@ -17,7 +17,7 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Trainee;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.dao.EmployeeDao;
-import com.ideas2it.confiq.ConnectionConfiq;
+import com.ideas2it.config.ConnectionConfig;
 import com.ideas2it.factory.EmployeeFactory;
 
 
@@ -145,7 +145,7 @@ public class EmployeeDaoImpl {
             session = EmployeeFactory.getEmployeeFactory().openSession();
             transaction = session.beginTransaction();
             Trainer trainer = (Trainer) session.get(Trainer.class, trainerId);
-            trainer.getTraineeDetails();
+            //  trainer.getTraineeDetails();
             if(!trainer.getIsRemoved()){
                 return trainer;
             } 
