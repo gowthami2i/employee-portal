@@ -9,7 +9,6 @@ import java.util.UUID;
 import com.ideas2it.exception.EmailMismatchException;
 
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.commons.validator.routines.DateValidator;
 
 /**
  * <h1>EmployeeUtill </h1>
@@ -41,7 +40,7 @@ public class  EmployeeUtil {
      */
     public static boolean isValidateFirstName(String name) {
 
-        String regex = "[A-Za-z\\s]{2,29}";
+        String regex = "[A-Za-z\\s]{5,29}";
 	Pattern pattern = Pattern.compile(regex);
 	Matcher matcher = pattern.matcher(name);
 	return matcher.matches();
@@ -140,25 +139,16 @@ public class  EmployeeUtil {
      * @param {@link String} dateOfBirth
      * @return {@link boolean) isValidMail
      */
-     public static boolean isValidDate(String employeeDateOfBirth) throws Exception {
-         boolean isValidateDate = false;
-
-         try {
-             LocalDate currentDate = LocalDate.now();
-             int currentYear = currentDate.getYear();
-             String[] date = employeeDateOfBirth.split("-");
-             int year = Integer.valueOf(date[0]);
-             if ((currentYear-60) <= year && year <= (currentYear-18)) {
-                 isValidateDate = DateValidator.getInstance().isValid(employeeDateOfBirth,"yyyy-MM-dd");
-             }
-         } catch (NumberFormatException e) {
-             throw e;
-         } catch (ArrayIndexOutOfBoundsException e) {
-             throw e;
-         }
-
-         return isValidateDate;
+    public static boolean isValidDateOfBirth(String dateOfBirth) {
+        LocalDate todayDate = LocalDate.now();
+        System.out.println(todayDate);
+        Pattern pattern = Pattern.compile("^(3[01]|[12][0-9]|0[1-9])-(1[0-2]|0[1-9])-(2[001-010])$");
+        Matcher matcher = pattern.matcher(dateOfBirth);
+        
+        return matcher.matches();
     }
+    
+
      
 
 }

@@ -41,8 +41,9 @@ public class EmployeeDaoImpl {
         Transaction transaction = null; 
         try {
             transaction = session.beginTransaction();
-            session.save(trainer);
             isInsertTrainer = true;
+            session.save(trainer);
+
             transaction.commit();   
         } catch (HibernateException e) {
 
