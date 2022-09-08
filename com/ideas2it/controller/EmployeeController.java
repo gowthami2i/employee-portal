@@ -991,42 +991,41 @@ public class EmployeeController {
      * @param {@link Scanner}scanner object
      * @return {@link void} 
      */ 
-    public void  assignTraineesToTrainer(Scanner scanner) throws Exception {
+     public void  assignTraineesToTrainer(Scanner scanner) throws Exception {
 
         try {
             List<Trainee> trainee = employeeServiceImpl.getTraineesFromDao();
             System.out.println("Enter the Trainer id");
             int trainerId = scanner.nextInt();                                    
             Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
-                                         
+
             if (trainer != null) { 
                 displayTraineeDetails();  
                 System.out.println("enter the Trainee id (ex: 1,2,3)");
                 String[] traineeId = scanner.next().split(",");
                 int id=0;
-                                                                 
+
                 for (int i = 0; i < traineeId.length; i++) {
-                    id =Integer.valueOf(traineeId[i]); 
-                                                
+                    id =Integer.valueOf(traineeId[i]);
+     
                     for (Trainee retriveTrainee : trainee) {
-                      
+
                         if (retriveTrainee.getId() == id) {
                             trainer.getTraineeDetails().add(retriveTrainee);
                         } else {
-                            System.out.println("no trainee"); 
-                         //break;
-                        }                
-                    }
-                    System.out.println("no trainee");
-                } 
+                            System.out.println("no trainee");
+                        }
+                    }                
+                }
                 employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);           
             } else {                                                                                             
                 System.out.println("no trainer");
             }                                                                                                                                                                                                                                                                                                            
         } catch (NumberFormatException exception) {
+            System.out.println("Enter the valid traineeID");
             assignTraineesToTrainer(scanner);
             throw exception;
-            
+
         }       
     } 
                                                                                                                                
@@ -1040,12 +1039,11 @@ public class EmployeeController {
         try {
             List<Trainer> trainer = employeeServiceImpl.getTrainersFromDao() ;   
             System.out.println("Enter the Trainee id");
-            String traineeId = scanner.next(); 
-            int id1 = Integer.valueOf(traineeId);                                   
-            Trainee trainee = employeeServiceImpl.searchTraineeDetailsById(id1);
+            int traineeId = scanner.nextInt();                                   
+            Trainee trainee = employeeServiceImpl.searchTraineeDetailsById(traineeId);
                                           
             if (trainee != null) {
-                                                                  
+                displayTrainerDetails();                                                 
                 System.out.println("enter the Trainer id (ex: 1,2,3)");
                 String[] trainerId = scanner.next().split(",");
                 int id=0;
@@ -1058,39 +1056,38 @@ public class EmployeeController {
                         if (retriveTrainer.getId() == id) {
                             trainee.getTrainerDetails().add(retriveTrainer);
                         } else {
-                        //System.out.println("no trainee");
-                        break;
-                        } 
-                        System.out.println("no trainee");             
+                            System.out.println("no trainee");                        
+                        }               
                     } 
                 } 
-                employeeServiceImpl.updatedTraineeDetails(id1 , trainee);                   
+                employeeServiceImpl.updatedTraineeDetails(traineeId , trainee);                   
             } else {                                                                                             
                 System.out.println("no trainer" +traineeId);
             } 
         } catch (NumberFormatException exception ) {
-            System.out.println("Enter the valid traineeID");
+            System.out.println("Enter the valid trainer  ID");
             assignTrainersToTrainee(scanner);
             throw exception;
         }         
-    }    
-     public void unAssighnTrainerOrTrainee(Scanner scanner) throws Exception {
-   
+    }
+    public void unAssighnTrainerOrTrainee(Scanner scanner) throws Exception {
+
         System.out.println("Enter the trainerid ");
         int trainerId = scanner.nextInt();
+        displayTraineeDetails();
         System.out.println("Enter the trainee id to unassighn");
         int traineeId = scanner.nextInt();
         Trainer trainer = employeeServiceImpl.searchTrainerDetailsById(trainerId);
-        
+
         if (null != trainer) {
             List<Trainee> trainees = trainer.getTraineeDetails();
-            
+
             for (int i = 0; i<trainees.size(); i++) {
-            
+
                 if (trainer.getTraineeDetails().get(i).getId() == traineeId) {
                     trainees.remove(i);
                     boolean isUnAssighned = employeeServiceImpl.updatedTrainerDetails(trainerId , trainer);
-                    
+
                     if (isUnAssighned) {
                         System.out.println("unassighned sucessfully");
                     } else {
@@ -1100,10 +1097,8 @@ public class EmployeeController {
                     System.out.println("Id not found");
                 }
             }
-            
 
-        }
 
+        }                                                                                                                                                                                                                                                                                             
     }
-                                                                                                                                                                                                                                                                                             
 }

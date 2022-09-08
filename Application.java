@@ -1,7 +1,5 @@
 import com.ideas2it.controller.EmployeeController;
 
-
-
 /**
  * <h2> Ideas2IT Employee portal </h2>
  *
@@ -21,7 +19,6 @@ public class Application {
     private static EmployeeController  employeeController = new EmployeeController();    
     public static void main(String[] args)  {
       
-
         employeeController.viewMenu();
     }
 
