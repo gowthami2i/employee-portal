@@ -15,7 +15,6 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Trainee;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.dao.EmployeeDao;
-import com.ideas2it.config.ConnectionConfig;
 import com.ideas2it.factory.EmployeeFactory;
 
 /**
@@ -41,6 +40,7 @@ public class EmployeeDaoImpl {
         Transaction transaction = null; 
         try {
             transaction = session.beginTransaction();
+            System.out.println(trainer.getFirstName());
             session.save(trainer);
             isInsertTrainer = true;
             transaction.commit();   
@@ -143,15 +143,16 @@ public class EmployeeDaoImpl {
     public Trainer retrieveTrainerbyId(int trainerId) {
       
         Transaction transaction = null;
-        Trainer trainerDetails = null;
+        Trainer trainer = null;
         Session session = null;
         try {
             session = EmployeeFactory.getEmployeeFactory().openSession();
             transaction = session.beginTransaction();
-            Trainer trainer = (Trainer) session.get(Trainer.class, trainerId);
-            if(!trainer.getIsRemoved()){
-                return trainer;
-            } 
+            trainer = (Trainer) session.get(Trainer.class, trainerId);
+            Criteria criteria = session.createCriteria(Trainer.class);
+            criteria.add(Restrictions.eq("isRemoved", false));    
+            return trainer;
+             
         } catch (HibernateException e) {
 
             transaction.rollback();
@@ -160,7 +161,7 @@ public class EmployeeDaoImpl {
         } finally {
             session.close();
         }       
-        return null;
+       
     }
 
     /**
@@ -171,20 +172,19 @@ public class EmployeeDaoImpl {
     public Trainee retrieveTraineebyId(int traineeId) {
    
         Transaction transaction = null;
-                
+        Trainee trainee = null;      
         try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
              transaction = session.beginTransaction();   
-             Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
-             trainee.getTrainerDetails();
-             if(!trainee.getIsRemoved()){
-                 return trainee;
-             }
+             trainee = (Trainee)session.get(Trainee.class,traineeId);
+             Criteria criteria = session.createCriteria(Trainee.class);
+             criteria.add(Restrictions.eq("isRemoved", false));       
+             return trainee;
         } catch (HibernateException e) {
 
             transaction.rollback();
             throw e;
         }
-        return null;  
+          
     }
 
     /**

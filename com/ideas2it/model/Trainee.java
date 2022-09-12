@@ -2,8 +2,6 @@ package com.ideas2it.model;
 
 import java.util.List;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

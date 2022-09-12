@@ -111,17 +111,6 @@ public class  EmployeeUtil {
     }
 
     /**
-     * method is used to generate the UUID
-     * @param {@link String} BloodGroup
-     * @return {@link boolean) matcher
-     */
-    public static UUID getUUID() {
-    
-        UUID uniqueId = UUID.randomUUID();
-        return uniqueId;
-
-    }
-    /**
      * method is used to Validate a Email Id.
      * @param {@link String} email
      * @return {@link boolean) isValidMail
