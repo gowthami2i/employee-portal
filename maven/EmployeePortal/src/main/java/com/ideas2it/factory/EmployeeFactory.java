@@ -22,6 +22,14 @@ public class EmployeeFactory {
     private static SessionFactory factory;
     private static Logger logger = LoggerFactory.getLogger(EmployeeFactory.class);
 
+    private EmployeeFactory() {
+
+    }
+
+    /**
+     * method is used to create a session for connect database
+     * @return {@link SessionFactory} factory object
+     */
     public static SessionFactory getEmployeeFactory() {
 
         try {
@@ -31,10 +39,10 @@ public class EmployeeFactory {
                              addPackage("com.ideas2it.model").
                              addAnnotatedClass(Trainer.class).
                              addAnnotatedClass(Trainee.class).buildSessionFactory();
-        } catch (Throwable ex) {
+        } catch (Throwable exception) {
 
-            logger.error("Failed to create sessoionFactory object"+"{}", ex);
-            throw new ExceptionInInitializerError(ex);
+            logger.error("Failed to create sessoionFactory object"+"{}", exception);
+            throw new ExceptionInInitializerError(exception);
         }
         return factory;
     }

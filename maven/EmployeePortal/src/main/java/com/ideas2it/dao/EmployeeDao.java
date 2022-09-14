@@ -33,13 +33,13 @@ public interface EmployeeDao {
      * get the Trainers details in the map 
      * @return {@link  Map<String,Trainer>} trainers object
      */
-    List<Trainer> getTrainerDetails();
+    List<Trainer> getTrainerDetails() throws Exception;
    
     /**
      * get the Trainee details in the map 
      * @return {@link  Map<String,Trainee>} trainee object
      */
-    List<Trainee> getTraineeDetails();
+    List<Trainee> getTraineeDetails() throws Exception;
 
     /**
      * Insert Trainer in to the Database
@@ -47,7 +47,7 @@ public interface EmployeeDao {
      * @param {@link Trainer} trainer Object
      * @return {@link void }
      */
-     boolean insertTrainer(Trainer trainer);
+     boolean insertTrainer(Trainer trainer) throws Exception;
     
     /**
      * Insert Trainee in to the Database 
@@ -55,7 +55,7 @@ public interface EmployeeDao {
      * @param {@link Trainee} trainee Object
      * @return {@link void }
      */
-    boolean insertTrainee(Trainee trainee);
+    boolean insertTrainee(Trainee trainee) throws Exception;
     
     /**
      * retrieve the Trainer by EmployeeId in the map 
@@ -69,7 +69,7 @@ public interface EmployeeDao {
      * @param {@link String} employeeId
      * @return {@link Trainee} trainee Object
      */
-    Trainee retrieveTraineebyId(int traineeId);
+    Trainee retrieveTraineebyId(int traineeId) throws Exception;
 
     /**
      * Update the Trainer by using EmployeeId and user update object in the  
@@ -83,19 +83,19 @@ public interface EmployeeDao {
      * @param {@link String} employeeId
      * @param {@link Trainee} searchedUpdateTrainee Object
      */
-    boolean modifyTraineeDetailsById(int traineeId, Trainee trainee);
+    boolean modifyTraineeDetailsById(int traineeId, Trainee trainee) throws Exception;
     
     /**
      * Delete the Trainer by  using EmployeeId  
      * @param {@link String} employeeId
      */       
-    boolean deleteTrainerById(int removeEmployeeId) ;
+    boolean deleteTrainerById(int removeEmployeeId) throws Exception;
 
     /**
      * Delete the Trainee by using EmployeeId  
      * @param {@link String} employeeId
      * @return{@void}
      */
-    boolean deleteTraineeById(int removeEmployeeId);
+    boolean deleteTraineeById(int removeEmployeeId) throws Exception;
 
 }

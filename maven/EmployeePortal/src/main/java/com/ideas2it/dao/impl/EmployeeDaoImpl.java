@@ -15,7 +15,6 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Trainee;
 import com.ideas2it.model.Trainer;
 import com.ideas2it.dao.EmployeeDao;
-import com.ideas2it.config.ConnectionConfig;
 import com.ideas2it.factory.EmployeeFactory;
 
 /**
@@ -34,16 +33,16 @@ public class EmployeeDaoImpl {
      * @param {@link Trainer}trainer object
      * @return {@link void} 
      */
-    public boolean insertTrainer(Trainer trainer) {
+    public boolean insertTrainer(Trainer trainer) throws Exception {
 
         boolean isInsertTrainer = false;       
         Session session = EmployeeFactory.getEmployeeFactory().openSession();   
         Transaction transaction = null; 
         try {
             transaction = session.beginTransaction();
-            isInsertTrainer = true;
+            System.out.println(trainer.getFirstName());
             session.save(trainer);
-
+            isInsertTrainer = true;
             transaction.commit();   
         } catch (HibernateException e) {
 
@@ -61,7 +60,7 @@ public class EmployeeDaoImpl {
      * @param {@link Trainee}trainee object
      * @return {@link void} 
      */
-    public boolean insertTrainee(Trainee trainee) { 
+    public boolean insertTrainee(Trainee trainee)  throws Exception{ 
     
        boolean isInsertTrainee = false;
        Session session = EmployeeFactory.getEmployeeFactory().openSession();
@@ -87,7 +86,7 @@ public class EmployeeDaoImpl {
      * method is used to getTrainerDetails into Database
      * @return {@link List<Trainer>}trainer object 
      */ 
-    public List<Trainer> getTrainerDetails() {
+    public List<Trainer> getTrainerDetails()  throws Exception {
         
         List<Trainer> trainers = new ArrayList<>();
 
@@ -114,7 +113,7 @@ public class EmployeeDaoImpl {
      * method is used to getTraineeDetails into Database
      * @return {@link List<Trainee>}trainee object 
      */ 
-    public List<Trainee> getTraineeDetails() {
+    public List<Trainee> getTraineeDetails()  throws Exception {
     
         List<Trainee> trainees = new ArrayList<>();
         Session session = EmployeeFactory.getEmployeeFactory().openSession();
@@ -141,18 +140,19 @@ public class EmployeeDaoImpl {
      * @param {@link String} employeeId
      * @return {@link Trainer} trainer Object
      */          
-    public Trainer retrieveTrainerbyId(int trainerId) {
+    public Trainer retrieveTrainerbyId(int trainerId)  throws Exception {
       
         Transaction transaction = null;
-        Trainer trainerDetails = null;
+        Trainer trainer = null;
         Session session = null;
         try {
             session = EmployeeFactory.getEmployeeFactory().openSession();
             transaction = session.beginTransaction();
-            Trainer trainer = (Trainer) session.get(Trainer.class, trainerId);
-            if(!trainer.getIsRemoved()){
-                return trainer;
-            } 
+            trainer = (Trainer) session.get(Trainer.class, trainerId);
+            Criteria criteria = session.createCriteria(Trainer.class);
+            criteria.add(Restrictions.eq("isRemoved", false));    
+            return trainer;
+             
         } catch (HibernateException e) {
 
             transaction.rollback();
@@ -161,7 +161,7 @@ public class EmployeeDaoImpl {
         } finally {
             session.close();
         }       
-        return null;
+       
     }
 
     /**
@@ -169,33 +169,32 @@ public class EmployeeDaoImpl {
      * @param {@link String} employeeId
      * @return {@link Trainee} trainee Object
      */
-    public Trainee retrieveTraineebyId(int traineeId) {
+    public Trainee retrieveTraineebyId(int traineeId) throws Exception {
    
         Transaction transaction = null;
-                
-        try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+        Trainee trainee = null;      
+        try(Session session = EmployeeFactory.getEmployeeFactory().openSession()) {
              transaction = session.beginTransaction();   
-             Trainee trainee = (Trainee)session.get(Trainee.class,traineeId);
-             trainee.getTrainerDetails();
-             if(!trainee.getIsRemoved()){
-                 return trainee;
-             }
+             trainee = (Trainee)session.get(Trainee.class,traineeId);
+             Criteria criteria = session.createCriteria(Trainee.class);
+             criteria.add(Restrictions.eq("isRemoved", false));       
+             return trainee;
         } catch (HibernateException e) {
 
             transaction.rollback();
             throw e;
         }
-        return null;  
+          
     }
 
     /**
      * method is used to delete the Trainer by  using EmployeeId  
      * @param {@link String} employeeId
      */
-    public boolean deleteTrainerById(int removeEmployeeId) {
+    public boolean deleteTrainerById(int removeEmployeeId) throws Exception {
         Transaction transaction = null;
         boolean isDeleteTrainer = false;        
-        try (Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+        try (Session session = EmployeeFactory.getEmployeeFactory().openSession()) {
 
             transaction = session.beginTransaction();
             Trainer trainer = (Trainer) session.get(Trainer.class, removeEmployeeId); 
@@ -218,7 +217,7 @@ public class EmployeeDaoImpl {
      * @param {@link String} employeeId
      * @return{@void}
      */
-    public boolean deleteTraineeById(int removeEmployeeId) {
+    public boolean deleteTraineeById(int removeEmployeeId) throws Exception {
        Transaction transaction = null;
        boolean isDeleteTrainee = false;
        try (Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
@@ -244,7 +243,7 @@ public class EmployeeDaoImpl {
      * @param {@link String} employeeId
      * @param {@link Trainer} searchedUpdateTrainer Object
      */
-    public boolean modifyTrainerDetailsById(int trainerId, Trainer trainer) {
+    public boolean modifyTrainerDetailsById(int trainerId, Trainer trainer)  throws Exception {
 
         Transaction transaction = null;
         boolean isUpdateTrainer = false; 
@@ -278,7 +277,7 @@ public class EmployeeDaoImpl {
      * @param {@link String} employeeId
      * @param {@link Trainee} searchedUpdateTrainee Object
      */
-    public boolean modifyTraineeDetailsById(int traineeId, Trainee trainee) {
+    public boolean modifyTraineeDetailsById(int traineeId, Trainee trainee)  throws Exception {
 
         Transaction transaction = null;
         boolean isUpdateTrainee = false;

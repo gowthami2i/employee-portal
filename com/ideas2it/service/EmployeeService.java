@@ -30,7 +30,7 @@ public interface EmployeeService {
      * @param {@link Trainer} trainer Object
      * @return {@link void }
      */
-    boolean addTrainer(Trainer trainer) throws Exception;
+    boolean addTrainer(Trainer trainer) throws HibernateException;
 
     /**
      * method is used to add Trainee 

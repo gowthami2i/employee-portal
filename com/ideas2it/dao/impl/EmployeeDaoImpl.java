@@ -173,7 +173,7 @@ public class EmployeeDaoImpl {
    
         Transaction transaction = null;
         Trainee trainee = null;      
-        try(Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+        try(Session session = EmployeeFactory.getEmployeeFactory().openSession()) {
              transaction = session.beginTransaction();   
              trainee = (Trainee)session.get(Trainee.class,traineeId);
              Criteria criteria = session.createCriteria(Trainee.class);
@@ -194,7 +194,7 @@ public class EmployeeDaoImpl {
     public boolean deleteTrainerById(int removeEmployeeId) {
         Transaction transaction = null;
         boolean isDeleteTrainer = false;        
-        try (Session session = EmployeeFactory.getEmployeeFactory().openSession();) {
+        try (Session session = EmployeeFactory.getEmployeeFactory().openSession()) {
 
             transaction = session.beginTransaction();
             Trainer trainer = (Trainer) session.get(Trainer.class, removeEmployeeId); 

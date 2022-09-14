@@ -81,10 +81,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return {@link Trainer>} currentTrainer object
      */
     @Override
-    public Trainer searchTrainerDetailsById(int EmployeeId) {
-
-        Trainer currentTrainer = employeeDaoImpl.retrieveTrainerbyId(EmployeeId);
-        return currentTrainer;  
+    public Trainer searchTrainerDetailsById(int EmployeeId) throws Exception{
+        Trainer currentTrainer = null;
+        if (null != employeeDaoImpl.retrieveTrainerbyId(EmployeeId)) {
+            currentTrainer = employeeDaoImpl.retrieveTrainerbyId(EmployeeId);
+        }  
+        return currentTrainer;
     }
 
     /**
@@ -93,9 +95,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override  
     public Trainee searchTraineeDetailsById(int EmployeeId) throws Exception {
-  
-        Trainee currentTrainee = employeeDaoImpl.retrieveTraineebyId(EmployeeId);
-        return currentTrainee;  
+        Trainee currentTrainee = null;
+        if (null != employeeDaoImpl.retrieveTraineebyId(EmployeeId)) {
+            currentTrainee = employeeDaoImpl.retrieveTraineebyId(EmployeeId);
+            return currentTrainee;
+        }  
+        return currentTrainee;
     }
 
     /**
